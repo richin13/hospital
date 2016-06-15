@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='bower/semantic/dist/semantic.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock %}
+</head>
+<body>
+<div class="ui stackable menu">
+    <div class="item">
+        Hospital
+    </div>
+    <div class="right menu">
+        <a class="item">Inicio</a>
+        <a class="item">Acerca</a>
+        <a class="item">Contacto</a>
+        <a class="item">Ingresar</a>
+    </div>
+</div>
+{% block content %}
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='bower/vue/dist/vue.js') }}"></script>
+<script src="{{ url_for('static', filename='bower/jquery/dist/jquery.js') }}"></script>
+<script src="{{ url_for('static', filename='bower/semantic/dist/semantic.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}
+</body>
+</html>

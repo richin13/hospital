@@ -1,0 +1,30 @@
+{
+  "name": "hospital",
+  "homepage": "https://github.com/richin13/hospital",
+  "authors": [
+    "Ricardo Madriz <richin13@gmail.com>"
+  ],
+  "description": "flask app that rocks the hospitals",
+  "main": "run.py",
+  "keywords": [
+    "flask",
+    "python",
+    "vue.js",
+    "semantic",
+    "awesome",
+    "hospital"
+  ],
+  "license": "GPL v3",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "application/static/bower",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "semantic": "semantic-ui#^2.1.8",
+    "vue": "^1.0.24"
+  }
+}

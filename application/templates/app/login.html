@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Ingresar{% endblock %}
+{% block css %}
+    {{ super() }}
+    <style>
+        body > .grid {
+            height: 75%;
+        }
+
+        .column {
+            max-width: 450px;
+        }
+
+        .home-link {
+            color: #000;
+        }
+
+        .home-link:hover {
+            color: #0f2021;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+
+    <div id="content" class="ui middle aligned center aligned grid">
+        <div class="column">
+            <a href="{{ url_for('landing.index') }}" title="Volver al inicio" class="home-link"><i
+                    class="huge home icon"></i></a>
+            <h2>Ingresar al sistema</h2>
+            <form class="ui form" method="post">
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="user icon"></i>
+                        {{ form.email }}
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="lock icon"></i>
+                        {{ form.password }}
+                    </div>
+                </div>
+                {{ form.hidden_tag() }}
+                <input type="submit" class="ui button" value="Ingresar">
+            </form>
+            <div class="ui message">
+                No tiene una cuenta? <a href="mailto:admin@no.one">Contacte al administrador</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

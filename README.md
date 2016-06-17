@@ -1,4 +1,4 @@
-Hospital
+Hospital [![Build Status](https://travis-ci.org/richin13/hospital.svg?branch=development)](https://travis-ci.org/richin13/hospital)
 ===================
 
 Hospital is a Python web application developed as part of the college's course 'Database Administration'. It manages the operational work of propietary ambulances in a random hospital.

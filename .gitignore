@@ -102,3 +102,5 @@ ENV/
 
 ### Bower ###
 application/static/bower
+
+/application/foo.db

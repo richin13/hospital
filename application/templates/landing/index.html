@@ -4,24 +4,95 @@
 {# Landing page won't be using Vue... Wait for it #}
 {# Only /app will #}
 {% block content %}
-  <div class="ui vertical stripe segment">
-    <div class="ui middle aligned stackable grid container">
-      <div class="row">
-        <div class="eight wide column">
-          <h3 class="ui header">We Help Companies and Companions</h3>
-          <p>We can give your company superpowers to do things that they never thought possible. Let us delight your customers and empower your needs...through pure data analytics.</p>
-          <h3 class="ui header">We Make Bananas That Can Dance</h3>
-          <p>Yes that's right, you thought it was the stuff of dreams, but even bananas can be bioengineered.</p>
+    {{ super() }}
+    <div class="ui segments">
+        <div class="ui vertical stripe segment">
+            <div class="ui middle aligned stackable grid container">
+                <div class="row">
+                    <div class="eight wide column">
+                        <h3 class="ui header">Elimine los pormenores en la admnistración de su hospital</h3>
+                        <p>Permítanos administrador los detalles engorrosos de su hospital
+                            mientras usted se dedica a brindarle un asistencia personalizada a sus clientes.</p>
+                    </div>
+                    <div class="six wide right floated column">
+                        <img src="{{ url_for('static', filename='img/cover.jpg') }}"
+                             class="ui large bordered rounded image">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="right aligned column">
+                        <a href="{{ url_for('application.login') }}" class="ui huge green button">
+                            <i class="dashboard icon"></i> Ingresar
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="six wide right floated column">
-          <img src="{{ url_for('static', filename='img/cover.jpg') }}" class="ui large bordered rounded image">
+        <div class="ui vertical stripe segment">
+            <div class="ui middle aligned stackable grid container">
+                <div class="row">
+                    <div class="six wide column">
+                        <img src="{{ url_for('static', filename='img/tracking.png') }}" alt="Seguimiento">
+                    </div>
+                    <div class="eight wide right floated column">
+                        <h3 class="ui header">Seguimiento en línea de ambulancias</h3>
+                        <p>Revise las emergencias que están siendo atendidas por nuestras unidades en tiempo real.
+                            No se pierda ni un solo detalle de los destinos y las emergencias atendidas por las
+                            ambulancias</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="left aligned column">
+                        <a href="{{ url_for('application.tracking') }}" class="ui huge red button">
+                            <i class="ambulance icon"></i> Seguimiento
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="center aligned column">
-          <a class="ui huge button">Ingresar</a>
+        <div class="ui vertical stripe segment">
+            <div class="ui middle aligned stackable grid container">
+                <div class="row">
+                    <div class="eight wide column">
+                        <h3 class="ui header">Disponibilidad garantizada</h3>
+                        <p>Nuestro sistema en línea garantiza una disponibilidad inmediata y global para que sus
+                            operaciones
+                            se encuentren siempre funcionales. Cuando sea y donde sea.</p>
+                    </div>
+                    <div class="six wide right floated column">
+                        <img src="{{ url_for('static', filename='img/worldwide.jpg') }}"
+                             class="ui large bordered rounded image">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="right aligned column">
+                        <a href="{{ url_for('landing.contact') }}" class="ui huge blue button">
+                            <i class="call icon"></i> Contactar
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+        <div class="ui vertical stripe segment">
+            <div class="ui middle aligned stackable grid container">
+                <div class="row">
+                    <div class="six wide column">
+                        <img src="{{ url_for('static', filename='img/open.jpg') }}" alt="Código libre">
+                    </div>
+                    <div class="eight wide right floated column">
+                        <h3 class="ui header">Gratuito y libre</h3>
+                        <p>El código que le da el poder a la aplicación es completamente libre por lo que cualquier
+                            persona puede arreglarlo y mejorarlo</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="left aligned column">
+                        <a href="" class="ui huge gray button">
+                            <i class="github icon"></i> Código
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 {% endblock %}

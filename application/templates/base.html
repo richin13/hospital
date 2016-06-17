@@ -1,10 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% if title %}
+        <title>OpenHospital - {{ title }}</title>
+    {% else %}
+        <title>{% block title %}{% endblock %}</title>
+    {% endif %}
+
+    {% block css %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='bower/semantic/dist/semantic.min.css') }}">
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    {% endblock %}
 </head>
 <body>
-
+<div class="container" id="main">
+    {% block content %}{% endblock %}
+</div>
+{% block footer %}
+    <footer class="ui padded center aligned vertical footer segment">
+        <a href="http://www.kopimi.com/kopimi" target="_blank">
+            <img src="{{ url_for('static', filename='img/kopimi_k.png') }}" alt="kopimi">
+        </a>
+    </footer>
+{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='bower/jquery/dist/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='bower/semantic/dist/semantic.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% if jscripts %}
+        {% for s in jscripts %}
+            <script src="js/{{ s }}"></script>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
 </body>
 </html>

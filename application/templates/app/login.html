@@ -43,6 +43,28 @@
                 {{ form.hidden_tag() }}
                 <input type="submit" class="ui button" value="Ingresar">
             </form>
+            {% if error %}
+                <div class="ui error message">
+                <i class="close icon"></i>
+                <div class="header">
+                    Correo electrónico o contraseña inválidos.
+                </div>
+                <p>Verifique sus datos e inténtelo de nuevo</p>
+                </div>
+            {% endif %}
+            {% if form.errors %}
+                <div class="ui error message">
+                    <i class="close icon"></i>
+                    <div class="header">
+                        Algunos datos sin inválidos
+                    </div>
+                    <ul class="list">
+                        {% for e in form.errors %}
+                            <li>{{ form.errors[e][0] }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
             <div class="ui message">
                 No tiene una cuenta? <a href="mailto:admin@no.one">Contacte al administrador</a>
             </div>

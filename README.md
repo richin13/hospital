@@ -7,6 +7,8 @@ Hospital
 
 Hospital is a Python web application developed as part of the college's course 'Database Administration'. It manages the operational work of propietary ambulances in a random hospital.
 
+
+
 ----------
 
 Quickstart
@@ -29,6 +31,9 @@ $ bower install
 To view the app in action just type `python run.py` and open `http://localhost:5000` in a web browser.
 Stack
 -------------
+<p align="center">
+  <img src="http://i.imgur.com/zdfp6tS.png" alt="stack" />
+</p>
 
 Hospital is written in Python and make use of Flask microframework and other technologies described below
 

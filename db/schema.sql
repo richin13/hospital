@@ -23,8 +23,8 @@ CREATE TABLE patient (
 
 CREATE TABLE insurance_plan (
   id_insurance_plan INT PRIMARY KEY IDENTITY,
-	category VARCHAR(45) NOT NULL,
-	cover_percentage INT NOT NULL,
+  category VARCHAR(45) NOT NULL,
+  cover_percentage INT NOT NULL,
   description VARCHAR(60) NOT NULL,
   CONSTRAINT ck_insurance_plan_category CHECK (
     category = 'complementario'     OR

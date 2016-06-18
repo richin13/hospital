@@ -17,9 +17,13 @@ login_manager.login_view = 'application.login'
 # Blueprints registration
 from application.views import landing
 from application.views import app_views
+from application.views import panel
+from application.views import profile
 
 app.register_blueprint(landing.mod)
 app.register_blueprint(app_views.mod)
+app.register_blueprint(panel.mod)
+app.register_blueprint(profile.mod)
 
 # jinja2 config
 app.jinja_env.trim_blocks = True
@@ -30,6 +34,3 @@ app.jinja_env.lstrip_blocks = True
 def load_user(uid):
     return User.query.filter(User.id == uid).first()
 
-@app.route('/cdb')
-def createdb():
-    db.create_all()

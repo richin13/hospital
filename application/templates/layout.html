@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% if current_user.is_authenticated %}
-    {% set endpoint_home = url_for('application.index') %}
+    {% set endpoint_home = url_for('application.panel.index') %}
 {% else %}
     {% set endpoint_home = url_for('landing.index') %}
 {% endif %}
-{% block content %}
+{% block navbar %}
     <nav class="ui stackable menu">
         <div class="item">
             <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Hospital">
@@ -18,10 +18,10 @@
                     <span class="text">{{ current_user.username | upper }}</span>
                     <i class="dropdown icon"></i>
                     <div class="menu">
-                        <a href="{{ url_for('application.panel') }}" class="item">
+                        <a href="{{ url_for('application.panel.index') }}" class="item">
                             <i class="dashboard icon"></i> Panel
                         </a>
-                        <a class="item" href="{{ url_for('application.profile') }}">
+                        <a class="item" href="{{ url_for('application.profile.index') }}">
                             <i class="user icon"></i> Perfil
                         </a>
                         <a class="item" href="{{ url_for('application.logout') }}">
@@ -34,4 +34,7 @@
             {% endif %}
         </div>
     </nav>
+{% endblock %}
+{% block content %}
+
 {% endblock %}

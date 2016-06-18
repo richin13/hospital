@@ -1,0 +1,11 @@
+{% macro vertical_menu_item(name, label, url, current_page) %}
+    <a href="{{ url }}" class="item {% if name == current_page %}red active{% endif %}">{{ label }}</a>
+{% endmacro %}
+
+{% macro panel_url(endpoint='index') %}
+    {{ url_for('application.panel.'+endpoint) }}
+{% endmacro %}
+
+{% macro profile_url(endpoint='index') %}
+    {{ url_for('application.profile.'+endpoint) }}
+{% endmacro %}

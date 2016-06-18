@@ -1,7 +1,5 @@
 import flask
-from flask_login import login_required
-from flask_login import login_user
-from flask_login import logout_user
+import flask_login
 from ..forms import LoginForm
 from application.model.User import User
 
@@ -10,24 +8,13 @@ mod = flask.Blueprint('application', __name__, url_prefix='/app')
 
 @mod.route('/')
 def index():
-    return flask.redirect(flask.url_for('landing.index'))
-
-
-@mod.route('/panel')
-def panel():
-    return 'panel'
+    return flask.redirect(flask.url_for('application.panel.index'))
 
 
 @mod.route('/tracking')
-@login_required
+@flask_login.login_required
 def tracking():
     return 'hola'
-
-
-@mod.route('/profile')
-@login_required
-def profile():
-    return 'profile'
 
 
 @mod.route('/login', methods=['GET', 'POST'])
@@ -39,7 +26,7 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
 
         if user and user.validate_password(form.password.data):
-            login_user(user)
+            flask_login.login_user(user)
             _next = flask.request.args.get('next')
             return flask.redirect(_next or flask.url_for('application.index'))
         else:
@@ -49,7 +36,8 @@ def login():
 
 
 @mod.route('/logout')
+@flask_login.login_required
 def logout():
-    logout_user()
+    flask_login.logout_user()
 
     return flask.redirect(flask.url_for('landing.index'))

@@ -65,7 +65,7 @@ CREATE TABLE ambulance (
 	plate_number INT NOT NULL,
 	brand VARCHAR(45) NULL,
 	model VARCHAR(45) NULL,
-	odometer_count INT,
+	milage INT,
 	available BIT,
 	CONSTRAINT fk_driver_ambulance FOREIGN KEY (id_driver) REFERENCES driver(dni) ON DELETE SET NULL ON UPDATE CASCADE
 );

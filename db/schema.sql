@@ -17,9 +17,21 @@ CREATE TABLE patient (
 	last_name VARCHAR(45) NOT NULL,
 	address VARCHAR(45) NOT NULL,
 	phone_number VARCHAR(10) NOT NULL,
-	insurance_company VARCHAR(45),
-	insurance_type VARCHAR(45),
-	insurance_cover_amount FLOAT
+	id_insurance_plan INT,
+	CONSTRAINT fk_patient_insurance_company FOREIGN KEY(id_insurance_plan) REFERENCES insurance_plan(id_insurance_plan) ON UPDATE CASCADE
+);
+
+CREATE TABLE insurance_plan (
+  id_insurance_plan INT PRIMARY KEY IDENTITY,
+	category VARCHAR(45) NOT NULL,
+	cover_percentage INT NOT NULL,
+  description VARCHAR(60) NOT NULL,
+  CONSTRAINT ck_insurance_plan_category CHECK (
+    category = 'complementario'     OR
+    category = 'acumulativo'        OR
+    category = 'contra todo riesgo' OR
+    category = 'colectivo'
+  )
 );
 
 CREATE TABLE employee (
@@ -52,7 +64,7 @@ CREATE TABLE paramedic (
 	specialization CHAR(3) NOT NULL,
 	id_params_team INT,
 	CONSTRAINT fk_params_team_paramedic FOREIGN KEY (id_params_team) REFERENCES paramedic_team(id_params_team) ON DELETE SET NULL ON UPDATE CASCADE,
-	CONSTRAINT fk_employee_paramedic FOREIGN KEY (dni) REFERENCES employee(dni) ON DELETE CASCADE ON UPDATE CASCADE
+	CONSTRAINT fk_employee_paramedic FOREIGN KEY (dni) REFERENCES employee(dni) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT ck_specialization CHECK (
 		specialization = 'PAB' OR
 		specialization = 'APA' OR

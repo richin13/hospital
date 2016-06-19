@@ -57,24 +57,29 @@ END CATCH
 
 CREATE PROCEDURE update_completed_dispatch_data
     @id_ambulance INT,
-    @id_params_team INT,
-    @distance INT
+    @id_params_team INT
 AS
+  DECLARE @distance INT
+
   BEGIN TRY
+
+  SELECT @distance = (SELECT distance FROM dispatch WHERE dispatch.id_ambulance = @id_ambulance AND dispatch.id_params_team = @id_params_team)
+
   BEGIN TRANSACTION;
 
   UPDATE dispatch
   SET
     arrival_hour = GETDATE(),
     distance = @distance,
-    status = 'completado',
+    status = 4,
     fee = @distance * 500
   WHERE dispatch.id_ambulance = @id_ambulance AND dispatch.id_params_team = @id_params_team
 
   COMMIT TRANSACTION;
 
-  -- TODO: Call service fee calc procedure
-  -- TODO: Call update available status procedure
+  -- TODO: Call service fee calc procedure for patient bill
+  EXEC update_available_status @object = 'AMB', @object_id = @id_ambulance, @available = 1;
+  EXEC update_available_status @object = 'PARAM_T', @object_id = @id_params_team, @available = 1;
 
   END TRY
   BEGIN CATCH

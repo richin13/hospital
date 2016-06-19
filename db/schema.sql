@@ -60,7 +60,6 @@ CREATE TABLE employee (
   phone_number VARCHAR(10)  NOT NULL DEFAULT ('N/A'),
   salary       FLOAT        NOT NULL,
   available    BIT          NOT NULL,
-  type         CHAR(3)      NOT NULL,
   CONSTRAINT ck_salary CHECK (salary > 0)
 );
 
@@ -68,9 +67,17 @@ CREATE TABLE driver (
   dni        INT PRIMARY KEY,
   start_hour TIME NOT NULL,
   end_hour   TIME NOT NULL,
+  licence_type  CHAR(2),
   CONSTRAINT fk_employee_driver FOREIGN KEY (dni) REFERENCES employee (dni)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
+  CONSTRAINT ck_licence_type CHECK (
+		licence_type LIKE 'A[1-3]' OR
+		licence_type LIKE 'B[1-3]' OR
+		licence_type LIKE 'C[2]'   OR
+		licence_type LIKE 'D[1-3]' OR
+		licence_type LIKE 'E[1]'
+	)
 );
 
 CREATE TABLE paramedics_team (

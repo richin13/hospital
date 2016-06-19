@@ -5,7 +5,7 @@ class Province(db.Model):
     """
     province because this is Costa Rica baby! Change to `State´ to americanize it
     """
-    __table__ = 'province'
+    __tablename__ = 'province'
 
     id = db.Column('id_province', db.Integer, nullable=False, primary_key=True, autoincrement=False)
     name = db.Column(db.String(30), nullable=False)
@@ -23,7 +23,7 @@ class Canton(db.Model):
     """
     ugly af, change to `City´
     """
-    __table__ = 'canton'
+    __tablename__ = 'canton'
 
     id = db.Column('id_canton', db.Integer, nullable=False, primary_key=True)
     name = db.Column(db.String(60), nullable=False)

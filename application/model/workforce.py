@@ -6,7 +6,7 @@ class Employee(db.Model):
     An employee of the hospital. It abstracts the information of the different types of
     employees that the hospital has.
     """
-    __table__ = 'employee'
+    __tablename__ = 'employee'
 
     dni = db.Column(db.Integer, primary_key=True, autoincrement=False)
     name = db.Column(db.String(45), nullable=False)
@@ -41,7 +41,7 @@ class Driver(Employee):
     """
     An ambulance driver
     """
-    __table__ = 'driver'
+    __tablename__ = 'driver'
 
     dni = db.Column(db.Integer, db.ForeignKey('employee.id'), primary_key=True)
     start_hour = db.Column(db.Time)
@@ -60,7 +60,7 @@ class Driver(Employee):
 
 
 class Paramedic(Employee):
-    __table__ = 'paramedic'
+    __tablename__ = 'paramedic'
 
     dni = db.Column(db.Integer, db.ForeignKey('employee.id'), primary_key=True)
     specialization = db.Column(db.CHAR(3), nullable=False, default='UNK')
@@ -85,7 +85,7 @@ class Paramedic(Employee):
 
 
 class ParamedicTeam(db.Model):
-    __table__ = 'paramedics_team'
+    __tablename__ = 'paramedics_team'
 
     id = db.Column(db.Integer, nullable=False, primary_key=True)
     type = db.Column(db.String(2), nullable=False)

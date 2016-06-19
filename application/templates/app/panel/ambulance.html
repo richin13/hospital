@@ -1,0 +1,101 @@
+{% extends 'app/panel/layout.html' %}
+{% block panel_content %}
+    <div class="ui vertical segment">
+        <div class="ui container">
+            <h1 class="ui header">Ambulancias</h1>
+            <p>Gestión de los ambulancias del hospital</p>
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    {% for cat, msg in messages %}
+                        <div class="ui {{ cat }} message">
+                            <i class="close icon"></i>
+                            <div class="header">Notificación</div>
+                            <p>{{ msg }}</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <div class="ui vertical segment">
+                <h2 class="ui header panel-header">Agregar una nueva ambulacia</h2>
+                <form method="POST" class="ui form">
+                    {{ form.hidden_tag() }}
+                    <div class="field">
+                        <label>{{ form.license_plate.label }}</label>
+                        {{ form.license_plate }}
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>{{ form.brand.label }}</label>
+                            {{ form.brand }}
+                        </div>
+                        <div class="field">
+                            <label>{{ form.model.label }}</label>
+                            {{ form.model }}
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>{{ form.mileage.label }}</label>
+                        {{ form.mileage }}
+                    </div>
+                    <div class="field">
+                        <label>{{ form.available.label }}</label>
+                        {{ form.available }}
+                    </div>
+                    <input type="submit" value="Guardar" class="ui red button">
+                </form>
+                {% if form.errors %}
+                    <div class="ui error message">
+                        <i class="close icon"></i>
+                        <div class="header">
+                            Algunos datos sin inválidos
+                        </div>
+                        <ul class="list">
+                            {% for e in form.errors %}
+                                <li>{{ form.errors[e][0] }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="ui vertical segment">
+                <h2 class="ui header panel-header">Listado de ambulancias</h2>
+                <div class="ui statistics">
+                    <div class="statistic">
+                        <div class="value">
+                            <i class="ambulance icon"></i> {{ ambulances | length }}
+                        </div>
+                        <div class="label">
+                            Ambulancia(s)
+                        </div>
+                    </div>
+                    <div class="statistic">
+                        <div class="value">{{ available | length }}</div>
+                        <div class="label">Disponibles</div>
+                    </div>
+                </div>
+                <div class="separator"></div>
+                <div class="ui items">
+                    {% for a in ambulances %}
+                        <div class="item">
+                            <div class="content">
+                                <div class="header">{{ a.brand }}, {{ a.plate_number }}</div>
+                                <div class="description">
+                                    <p></p>
+                                    <p></p>
+                                </div>
+                                <div class="extra">
+                                    {% if a.available %}
+                                        <i class="green check icon"></i> Disponible
+                                    {% else %}
+                                        <i class="red remove icon"></i> No disponible
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'app/dashboard_layout.html' %}
+{% import '_macros.html' as macros %}
+{% set p = current_page or 'index' %}
+{% block vertical_menu %}
+    <div class="item">
+        <div class="header">Operaciones</div>
+        <div class="menu">
+            {{ macros.vertical_menu_item('index', 'Panel', macros.panel_url(), p) }}
+            {{ macros.vertical_menu_item('dispatch', 'Despachar', macros.panel_url('dispatch'), p) }}
+            {{ macros.vertical_menu_item('ambulances', 'Ambulancias', macros.panel_url('ambulances'), p) }}
+            {{ macros.vertical_menu_item('paramedics', 'Paramédicos', macros.panel_url('paramedics'), p) }}
+            {{ macros.vertical_menu_item('teams', 'Equipos', macros.panel_url('teams'), p) }}
+            {{ macros.vertical_menu_item('drivers', 'Choferes', macros.panel_url('drivers'), p) }}
+        </div>
+    </div>
+    <div class="item">
+        <div class="header">Reportes</div>
+        <div class="menu">
+            <div class="item">Todo</div>
+            <div class="item">Todo</div>
+            <div class="item">Todo</div>
+            <div class="item">Todo</div>
+        </div>
+    </div>
+
+{% endblock %}

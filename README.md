@@ -1,7 +1,13 @@
 Hospital
 ===================
 
+[![Build Status](https://api.travis-ci.org/richin13/hospital.svg?branch=development)](https://travis-ci.org/richin13/hospital) [![License](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+[![Python](https://img.shields.io/badge/python-3.5-gren.svg)](https://www.python.org/downloads/release/python-350/)
+
+
 Hospital is a Python web application developed as part of the college's course 'Database Administration'. It manages the operational work of propietary ambulances in a random hospital.
+
+
 
 ----------
 
@@ -25,6 +31,9 @@ $ bower install
 To view the app in action just type `python run.py` and open `http://localhost:5000` in a web browser.
 Stack
 -------------
+<p align="center">
+  <img src="http://i.imgur.com/zdfp6tS.png" alt="stack" />
+</p>
 
 Hospital is written in Python and make use of Flask microframework and other technologies described below
 
@@ -35,25 +44,24 @@ Hospital is written in Python and make use of Flask microframework and other tec
 
 * Python (3.5.1)
 * Flask Microframework
- * SQL Alchemy
- * Flask-Session
- * Flask-Marshmallow
+ * Flask-Bcrypt
+ * Flask-Login
+ * Flask-SQLAlchemy
 * Microsoft SQL Server 2014
 * Semantic-UI
-* Vue.js
 
 -------------
 
-Todo
+TODO
 -------------
 
 The app is still in __super__ early development
 
 * ~~Add flask application structure~~
-* Create database
-* Introduce MSSQL to SQL Alchemy
-* Develop web app in Vue.js
-* Etc...
+* ~~Create database~~
+* ~~Introduce MSSQL to SQL Alchemy~~
+* ~~Add /app templates~~
+* Consume stored procedures in app
 
 ----------
 

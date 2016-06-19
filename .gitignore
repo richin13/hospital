@@ -104,3 +104,6 @@ ENV/
 application/static/bower
 
 /application/foo.db
+
+### OS X Crap ###
+.DS_Store

@@ -44,7 +44,6 @@ Hospital is written in Python and make use of Flask microframework and other tec
 
 * Python (3.5.1)
 * Flask Microframework
- * Flask-Auth
  * Flask-Bcrypt
  * Flask-Login
  * Flask-SQLAlchemy
@@ -59,9 +58,10 @@ TODO
 The app is still in __super__ early development
 
 * ~~Add flask application structure~~
-* Create database
-* Introduce MSSQL to SQL Alchemy
-* Add /app templates
+* ~~Create database~~
+* ~~Introduce MSSQL to SQL Alchemy~~
+* ~~Add /app templates~~
+* Consume stored procedures in app
 
 ----------
 

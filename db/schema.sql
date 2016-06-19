@@ -1,4 +1,3 @@
-
 CREATE TABLE province (
   id_province INT         NOT NULL PRIMARY KEY,
   name        VARCHAR(30) NOT NULL
@@ -64,20 +63,20 @@ CREATE TABLE employee (
 );
 
 CREATE TABLE driver (
-  dni        INT PRIMARY KEY,
-  start_hour TIME NOT NULL,
-  end_hour   TIME NOT NULL,
-  licence_type  CHAR(2),
+  dni          INT PRIMARY KEY,
+  start_hour   TIME NOT NULL,
+  end_hour     TIME NOT NULL,
+  licence_type CHAR(2),
   CONSTRAINT fk_employee_driver FOREIGN KEY (dni) REFERENCES employee (dni)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT ck_licence_type CHECK (
-		licence_type LIKE 'A[1-3]' OR
-		licence_type LIKE 'B[1-3]' OR
-		licence_type LIKE 'C[2]'   OR
-		licence_type LIKE 'D[1-3]' OR
-		licence_type LIKE 'E[1]'
-	)
+    licence_type LIKE 'A[1-3]' OR
+    licence_type LIKE 'B[1-3]' OR
+    licence_type LIKE 'C[2]' OR
+    licence_type LIKE 'D[1-3]' OR
+    licence_type LIKE 'E[1]'
+  )
 );
 
 CREATE TABLE paramedics_team (

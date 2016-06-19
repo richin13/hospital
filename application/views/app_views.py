@@ -1,7 +1,7 @@
 import flask
 import flask_login
 from ..forms import LoginForm
-from application.model.User import User
+from application.model.app_model import User
 
 mod = flask.Blueprint('application', __name__, url_prefix='/app')
 

@@ -8,7 +8,7 @@ app.config.from_object('config.DevelopmentConfig')
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
-from application.model.User import User
+from application.model.app_model import User
 
 login_manager = LoginManager()
 login_manager.init_app(app)

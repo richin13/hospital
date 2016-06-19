@@ -5,12 +5,20 @@ from sqlalchemy.ext.hybrid import hybrid_property
 
 
 class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True)
-    email = db.Column(db.String(120), unique=True)
-    _password = db.Column(db.String(128))
+    __table__ = 'users'
 
-    def __init__(self, username, email, pw):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(32), nullable=False)
+    last_name = db.Column(db.String(32), nullable=False)
+    genre = db.Column(db.CHAR(1), db.CheckConstraint('genre in (\'M\', \'F\')'), nullable=False)
+    username = db.Column(db.String(80), nullable=False, unique=True)
+    email = db.Column(db.String(120), nullable=False, unique=True)
+    _password = db.Column(db.String(128), nullable=False)
+
+    def __init__(self, name, last_name, genre, username, email, pw):
+        self.name = name
+        self.last_name = last_name
+        self.genre = genre
         self.username = username
         self.email = email
         self._password = bcrypt.generate_password_hash(pw)

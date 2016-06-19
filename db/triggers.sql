@@ -1,4 +1,3 @@
--- BASIC
 CREATE TRIGGER update_params_team_operation_fee
 ON paramedic
 AFTER INSERT
@@ -15,11 +14,11 @@ AS
 		INNER JOIN employee
 		ON inserted.dni = employee.dni
 
-		SELECT @team_members_count = (SELECT COUNT(*) FROM paramedic_team WHERE id_params_team = @team_id)
+		SELECT @team_members_count = (SELECT COUNT(*) FROM paramedics_team WHERE id_params_team = @team_id)
 
 		BEGIN TRANSACTION @tran_name;
 
-		UPDATE paramedic_team
+		UPDATE paramedics_team
 		SET operation_fee = (operation_fee + @paramedic_salary) / @team_members_count
 		WHERE id_params_team = @team_id
 
@@ -29,9 +28,8 @@ AS
 		ROLLBACK TRANSACTION @tran_name;
 	END CATCH
 
--- SPECIAL
-ALTER TRIGGER update_ambulance_milage
-ON deployment
+CREATE TRIGGER update_ambulance_milage
+ON dispatch
 AFTER UPDATE
 AS
 SET NOCOUNT ON	
@@ -46,7 +44,7 @@ SET NOCOUNT ON
 			
 			BEGIN TRANSACTION;
 			UPDATE ambulance
-			SET milage = milage + @deployment_distance
+			SET mileage = mileage + @deployment_distance
 			WHERE ambulance.id_ambulance = @ambulance_id
 			COMMIT TRANSACTION;
 		END

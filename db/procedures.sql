@@ -1,4 +1,4 @@
-ALTER PROCEDURE apply_insurance_cover
+CREATE PROCEDURE apply_insurance_cover
   @bill_id INT
 AS
 DECLARE
@@ -28,13 +28,15 @@ IF ((SELECT covered_by_insurance FROM patient_bill WHERE id_bill = @bill_id) != 
       BEGIN
 
         SELECT @cover_percentage = (
-          SELECT insurance_plan.cover_percentage
+          SELECT insurance_plan.coverage_percentage
           FROM insurance_plan
             INNER JOIN patient
               ON insurance_plan.id_insurance_plan = patient.id_insurance_plan
-          GROUP BY insurance_plan.cover_percentage, patient.id_patient
+          GROUP BY insurance_plan.coverage_percentage, patient.id_patient
           HAVING patient.id_patient = @patient_id
         );
+
+        BEGIN TRANSACTION;
 
         UPDATE patient_bill
         SET
@@ -42,10 +44,13 @@ IF ((SELECT covered_by_insurance FROM patient_bill WHERE id_bill = @bill_id) != 
           covered_by_insurance = 1
         WHERE patient_bill.id_bill = @bill_id
 
+        COMMIT TRANSACTION;
+
       END
   END
 END TRY
 BEGIN CATCH
+  ROLLBACK TRANSACTION;
   PRINT ERROR_MESSAGE() + ERROR_NUMBER()
 END CATCH
 
@@ -69,7 +74,7 @@ AS
   COMMIT TRANSACTION;
 
   -- TODO: Call service fee calc procedure
-  -- TODO: Call insurance cover procedure (Requires service fee calc)
+  -- TODO: Call update available status procedure
 
   END TRY
   BEGIN CATCH
@@ -95,9 +100,9 @@ AS
 
     ELSE IF (@object = 'PARAM_T')
       BEGIN
-        UPDATE paramedic_team
+        UPDATE paramedics_team
         SET available = @available
-        WHERE paramedic_team.id_params_team = @object_id AND available != @available
+        WHERE paramedics_team.id_params_team = @object_id AND available != @available
       END
 
     ELSE IF (@object = 'AMB')

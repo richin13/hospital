@@ -2,7 +2,7 @@ from application import db
 
 
 class Ambulance(db.Model):
-    __table__ = 'ambulance'
+    __tablename__ = 'ambulance'
 
     id = db.Column(db.Integer, primary_key=True)
     plate_number = db.Column(db.Integer, nullable=False, unique=True)
@@ -11,7 +11,7 @@ class Ambulance(db.Model):
     mileage = db.Column(db.Integer, nullable=False)
     available = db.Column(db.Boolean, nullable=False)
 
-    driver_id = db.Column(db.Integer, db.ForeignKey('driver.id'))
+    driver_id = db.Column(db.Integer, db.ForeignKey('driver.dni'))
     dispatches = db.relationship('Dispatch', backref='ambulance')
 
     def __init__(self, plate_number, brand, model, mileage=0, available=True):
@@ -23,7 +23,7 @@ class Ambulance(db.Model):
 
 
 class Emergency(db.Model):
-    __table__ = 'emergency'
+    __tablename__ = 'emergency'
 
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(60), nullable=False)
@@ -42,7 +42,7 @@ class Emergency(db.Model):
 
 
 class Dispatch(db.Model):
-    __table__ = 'dispatch'
+    __tablename__ = 'dispatch'
 
     ambulance_id = db.Column(db.Integer, db.ForeignKey('ambulance.id'), nullable=False)
     paramedics_team_id = db.Column(db.Integer, db.ForeignKey('paramedics_team.id'), nullable=False)
@@ -71,7 +71,7 @@ class Dispatch(db.Model):
 
 
 class Patient(db.Model):
-    __table__ = 'patient'
+    __tablename__ = 'patient'
 
     dni = db.Column(db.Integer, primary_key=True, autoincrement=False)
     name = db.Column(db.String(45), nullable=False)
@@ -92,10 +92,12 @@ class Patient(db.Model):
 
 
 class Bill(db.Model):
+    __tablename__ = 'patient_bill'
+
     id = db.Column(db.Integer, primary_key=True)
     fee = db.Column(db.Float, nullable=False)
     covered_by_insurance = db.Column(db.Boolean, nullable=False)
-    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.dni'), nullable=False)
     emergency_id = db.Column(db.Integer, db.ForeignKey('emergency.id'), nullable=False)
 
     def __init__(self, fee, covered, patient, emergency):
@@ -106,7 +108,7 @@ class Bill(db.Model):
 
 
 class InsurancePlan(db.Model):
-    __table__ = 'insurance_plan'
+    __tablename__ = 'insurance_plan'
 
     id = db.Column(db.Integer, primary_key=True)
     category = db.Column(db.Integer, nullable=False)
@@ -114,7 +116,7 @@ class InsurancePlan(db.Model):
     description = db.Column(db.String(60), nullable=False)
 
     __table_args__ = (
-        db.CheckConstraint('category >= 1 AND category <= 4')
+        db.CheckConstraint('category >= 1 AND category <= 4'),
     )
 
     def __init__(self, category, coverage_percentage, description):

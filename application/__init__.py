@@ -34,3 +34,14 @@ app.jinja_env.lstrip_blocks = True
 def load_user(uid):
     return User.query.filter(User.id == uid).first()
 
+
+@app.route('/cdb')
+def cdb():
+    from application.model.operational import Ambulance, Bill, Dispatch, Emergency, InsurancePlan, Patient
+    from application.model.places import Canton, Province
+    from application.model.workforce import Employee, Driver, Paramedic, ParamedicTeam
+    db.create_all()
+    u = User('Ricardo', 'Madriz', 'M', 'richin13', 'richin13@gmail.com', 'admin')
+    db.session.add(u)
+    db.session.commit()
+    return 'done'

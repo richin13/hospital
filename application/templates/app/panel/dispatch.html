@@ -3,7 +3,88 @@
     <div class="ui vertical segment">
         <div class="ui container">
             <h1 class="ui header">Despachos</h1>
-            <p>If you can see this, then you're logged in ;)</p>
+            <p>Gestión de los despachos de ambulancias hacia una emergencia</p>
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    {% for cat, msg in messages %}
+                        <div class="ui {{ cat }} message">
+                            <i class="close icon"></i>
+                            <div class="header">Notificación</div>
+                            <p>{{ msg }}</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <div class="ui vertical segment">
+                <h2 class="ui header panel-header">Despachar</h2>
+                <form method="POST" class="ui form">
+                    {{ form.hidden_tag() }}
+                    <h3 class="ui header">Detalles de la emergencia</h3>
+                    <div class="field">
+                        <label>{{ form.emergency.description.label }}</label>
+                        {{ form.emergency.description }}
+                    </div>
+                    <div class="field">
+                        <label>{{ form.emergency.address.label }}</label>
+                        {{ form.emergency.address }}
+                    </div>
+                    <div class="field">
+                        <label>{{ form.emergency.e_type.label }}</label>
+                        {{ form.emergency.e_type }}
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>{{ form.emergency.province.label }}</label>
+                            {{ form.emergency.province }}
+                        </div>
+                        <div class="field">
+                            <label>{{ form.emergency.canton.label }}</label>
+                            {{ form.emergency.canton }}
+                        </div>
+                    </div>
+                    <h3 class="ui header">Detalles del despacho</h3>
+                    <div class="field">
+                        <label>{{ form.ambulance.label }}</label>
+                        {{ form.ambulance }}
+                    </div>
+                    <div class="field">
+                        <label>{{ form.team.label }}</label>
+                        {{ form.team }}
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>{{ form.dispatch_hour.label }}</label>
+                            {{ form.dispatch_hour }}
+                        </div>
+                        <div class="field">
+                            <label>{{ form.arrival_hour.label }}</label>
+                            {{ form.arrival_hour }}
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>{{ form.status.label }}</label>
+                        {{ form.status }}
+                    </div>
+                    <div class="field">
+                        <label>{{ form.distance.label }} (Aprox. en KM)</label>
+                        {{ form.distance }}
+                    </div>
+                    <input type="submit" value="Guardar" class="ui red button">
+                </form>
+                {% if form.errors %}
+                    <div class="ui error message">
+                        <i class="close icon"></i>
+                        <div class="header">
+                            Algunos datos sin inválidos
+                        </div>
+                        <ul class="list">
+                            {% for e in form.errors %}
+                                <li>{{ form.errors[e][0] }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}

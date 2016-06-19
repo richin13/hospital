@@ -6,7 +6,7 @@ class Employee(db.Model):
     An employee of the hospital. It abstracts the information of the different types of
     employees that the hospital has.
     """
-    __table__ = 'employee'
+    __tablename__ = 'employee'
 
     dni = db.Column(db.Integer, primary_key=True, autoincrement=False)
     name = db.Column(db.String(45), nullable=False)
@@ -23,7 +23,7 @@ class Employee(db.Model):
     }
 
     __table_args__ = (
-        db.CheckConstraint('salary > 0')
+        db.CheckConstraint('salary > 0'),
     )
 
     def __init__(self, dni, name, ln, addr, pn, salary, available, _type):
@@ -32,8 +32,8 @@ class Employee(db.Model):
         self.last_name = ln
         self.address = addr
         self.phone_number = pn
-        self.salary = salary,
-        self.available = available,
+        self.salary = salary
+        self.available = available
         self.type = _type
 
 
@@ -41,9 +41,9 @@ class Driver(Employee):
     """
     An ambulance driver
     """
-    __table__ = 'driver'
+    __tablename__ = 'driver'
 
-    dni = db.Column(db.Integer, db.ForeignKey('employee.id'), primary_key=True)
+    dni = db.Column(db.Integer, db.ForeignKey('employee.dni'), primary_key=True)
     start_hour = db.Column(db.Time)
     end_hour = db.Column(db.Time)
 
@@ -60,11 +60,11 @@ class Driver(Employee):
 
 
 class Paramedic(Employee):
-    __table__ = 'paramedic'
+    __tablename__ = 'paramedic'
 
-    dni = db.Column(db.Integer, db.ForeignKey('employee.id'), primary_key=True)
+    dni = db.Column(db.Integer, db.ForeignKey('employee.dni'), primary_key=True)
     specialization = db.Column(db.CHAR(3), nullable=False, default='UNK')
-    team_id = db.Column(db.Integer, db.ForeignKey('paramedic_team.id'))
+    team_id = db.Column(db.Integer, db.ForeignKey('paramedics_team.id'))
 
     __mapper_args__ = {
         'polymorphic_identity': 'paramedic'
@@ -75,7 +75,7 @@ class Paramedic(Employee):
             specialization = 'PAB' OR
             specialization = 'APA' OR
             specialization = 'AEM' OR
-            specialization = 'TEM'""")
+            specialization = 'TEM'"""),
     )
 
     def __init__(self, dni, name, ln, addr, pn, salary, available, _type, sh, eh):
@@ -85,7 +85,7 @@ class Paramedic(Employee):
 
 
 class ParamedicTeam(db.Model):
-    __table__ = 'paramedics_team'
+    __tablename__ = 'paramedics_team'
 
     id = db.Column(db.Integer, nullable=False, primary_key=True)
     type = db.Column(db.String(2), nullable=False)
@@ -99,10 +99,21 @@ class ParamedicTeam(db.Model):
         db.CheckConstraint("""
             type = 'SB' OR
             type = 'SA' OR
-            type = 'SV'""")
+            type = 'SV'"""),
     )
 
     def __init__(self, _type, available, of):
         self.type = _type
         self.available = available
         self.operation_fee = of
+
+    def _pretty_type(self):
+        if self.type == 'SB':
+            return 'Soporte Básico'
+        elif self.type == 'SA':
+            return 'Soporte Avanzado'
+        else:
+            return 'Soporte Vital'
+
+    def __repr__(self):
+        return 'Equpo %s: %s' % (self.id, self._pretty_type())

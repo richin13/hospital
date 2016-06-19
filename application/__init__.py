@@ -6,6 +6,7 @@ from flask_bcrypt import Bcrypt
 app = Flask(__name__)
 app.config.from_object('config.DevelopmentConfig')
 db = SQLAlchemy(app)
+db.create_all()
 bcrypt = Bcrypt(app)
 
 from application.model.app_model import User

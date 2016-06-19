@@ -3,7 +3,40 @@
     <div class="ui vertical segment">
         <div class="ui container">
             <h1 class="ui header">Ambulancias</h1>
-            <p>If you can see this, then you're logged in ;)</p>
+            <p>Gestión de los ambulancias del hospital</p>
+            <div class="ui segments">
+                <div class="ui vertical segment">
+                    <h2 class="ui header">Agregar una nueva ambulacia</h2>
+                    <form method="POST" class="ui form">
+                        {{ form.hidden_tag() }}
+                        <div class="field">
+                            <label>{{ form.license_plate.label }}</label>
+                            {{ form.license_plate }}
+                        </div>
+                        <div class="field">
+                            <label>{{ form.brand.label }}</label>
+                            {{ form.brand }}
+                        </div>
+                        <div class="field">
+                            <label>{{ form.model.label }}</label>
+                            {{ form.model }}
+                        </div>
+                        <div class="field">
+                            <label>{{ form.mileage.label }}</label>
+                            {{ form.mileage }}
+                        </div>
+                        <div class="field">
+                            <label>{{ form.available.label }}</label>
+                            {{ form.available }}
+                        </div>
+                    </form>
+                </div>
+                <div class="ui vertical segment">
+                    <h2 class="ui header">Listado de ambulancias</h2>
+                    <p>coming soon!</p>
+                </div>
+            </div>
+
         </div>
     </div>
 {% endblock %}

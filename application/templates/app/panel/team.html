@@ -2,8 +2,8 @@
 {% block panel_content %}
     <div class="ui vertical segment">
         <div class="ui container">
-            <h1 class="ui header">Paramédicos</h1>
-            <p>Gestión de los paramédicos del hospital</p>
+            <h1 class="ui header">Equipos</h1>
+            <p>Gestión de los equipos paramédicos del hospital</p>
             {% with messages = get_flashed_messages(with_categories=True) %}
                 {% if messages %}
                     {% for cat, msg in messages %}
@@ -16,44 +16,22 @@
                 {% endif %}
             {% endwith %}
             <div class="ui vertical segment">
-                <h2 class="ui header panel-header">Agregar un nuevo paramédico</h2>
+                <h2 class="ui header panel-header">Agregar un nuevo equipo</h2>
                 <form method="POST" class="ui form">
                     {{ form.hidden_tag() }}
-                    <div class="field">
-                        <label>{{ form.dni.label }}</label>
-                        {{ form.dni }}
-                    </div>
                     <div class="two fields">
                         <div class="field">
-                            <label>{{ form.name.label }}</label>
-                            {{ form.name }}
+                            <label>{{ form.type.label }}</label>
+                            {{ form.type }}
                         </div>
                         <div class="field">
-                            <label>{{ form.last_name.label }}</label>
-                            {{ form.last_name }}
+                            <label>{{ form.fee.label }}</label>
+                            {{ form.fee }}
                         </div>
                     </div>
                     <div class="field">
-                        <label>{{ form.address.label }}</label>
-                        {{ form.address }}
-                    </div>
-                    <div class="field">
-                        <label>{{ form.phone_number.label }}</label>
-                        {{ form.phone_number }}
-                    </div>
-                    <div class="two fields">
-                        <div class="field">
-                            <label>{{ form.salary.label }}</label>
-                            {{ form.salary }}
-                        </div>
-                        <div class="field">
-                            <label>{{ form.available.label }}</label>
-                            {{ form.available }}
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label>{{ form.specialization.label }}</label>
-                        {{ form.specialization }}
+                        <label>{{ form.available.label }}</label>
+                        {{ form.available }}
                     </div>
                     <input type="submit" value="Guardar" class="ui red button">
                 </form>
@@ -72,14 +50,14 @@
                 {% endif %}
             </div>
             <div class="ui vertical segment">
-                <h2 class="ui header panel-header">Listado de paramédicos</h2>
+                <h2 class="ui header panel-header">Listado de equipos</h2>
                 <div class="ui statistics">
                     <div class="statistic">
                         <div class="value">
-                            <i class="ambulance icon"></i> {{ paramedics | length }}
+                            <i class="ambulance icon"></i> {{ teams | length }}
                         </div>
                         <div class="label">
-                            Paramédico(s)
+                            Equipos(s)
                         </div>
                     </div>
                     <div class="statistic">
@@ -89,16 +67,16 @@
                 </div>
                 <div class="separator"></div>
                 <div class="ui items">
-                    {% for p in paramedics %}
+                    {% for t in teams %}
                         <div class="item">
                             <div class="content">
-                                <div class="header">{{ p.name }} {{ p.last_name }}</div>
+                                <div class="header">{{ t.type }}, {{ t.operation_fee }}</div>
                                 <div class="description">
                                     <p></p>
                                     <p></p>
                                 </div>
                                 <div class="extra">
-                                    {% if p.available %}
+                                    {% if t.available %}
                                         <i class="green check icon"></i> Disponible
                                     {% else %}
                                         <i class="red remove icon"></i> No disponible

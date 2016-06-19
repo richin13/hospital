@@ -1,16 +1,67 @@
 from flask_wtf import Form
-from wtforms import StringField
-from wtforms import IntegerField
-from wtforms import BooleanField
-from wtforms.validators import length
-from wtforms.validators import NumberRange
-from wtforms.validators import DataRequired
+from wtforms import StringField, TextAreaField, IntegerField, BooleanField, FloatField, DateTimeField, SelectField, \
+    FormField
+from wtforms.validators import DataRequired, NumberRange, length
+
+
+class AddEmployeeForm(Form):
+    dni = IntegerField('Cédula', validators=[DataRequired('Debe especificar el número de cedula')],
+                       render_kw={'placeholder': 'Cédula'})
+    name = StringField('Nombre', validators=[DataRequired('Debe especificar el nombre')],
+                       render_kw={'placeholder': 'Nombre'})
+    last_name = StringField('Apellido', validators=[DataRequired('Debe especificar el apellido')],
+                            render_kw={'placeholder': 'Apellido'})
+    address = TextAreaField('Dirección', validators=[length(max=128)],
+                            render_kw={'placeholder': 'Dirección'})
+    phone_number = StringField('Teléfono', validators=[length(max=10)],
+                               render_kw={'placeholder': 'Teléfono'})
+    salary = FloatField('Salario', validators=[DataRequired('Debe especificar el salario'), NumberRange(min=0)],
+                        render_kw={'placeholder': 'Salario'})
+    available = BooleanField('Disponible')
+
+
+class AddEmergencyForm(Form):
+    description = TextAreaField('Descripción')
+    e_type = StringField('Tipo')
+    address = TextAreaField('Dirección')
+    province = SelectField('Provincia', coerce=int)
+    canton = SelectField('Cantón', coerce=int)
+    pass
+
+
+class DispatchForm(Form):
+    emergency = FormField(AddEmergencyForm)
+    ambulance = SelectField('Ambulancia', coerce=int)
+    team = SelectField('Equipo', coerce=int)
+    dispatch_hour = DateTimeField('Hora de salida')
+    arrival_hour = DateTimeField('Hora de entrada')
+    distance = IntegerField('Distancia')
+    status = SelectField('Estado',
+                         choices=[('1', 'En ruta'), ('2', 'En sitio'), ('3', 'Volviendo'), ('4', 'Completado'),
+                                  ('5', 'Cancelado')])
+    fee = FloatField('Cargos')
+
+
+class AddDriverForm(AddEmployeeForm):
+    start_hour = DateTimeField('Hora de entrada (HH:MM)', format='%H:%M')
+    end_hour = DateTimeField('Hora de salida (HH:MM)', format='%H:%M')
+
+
+class AddParamedicForm(AddEmployeeForm):
+    specialization = SelectField('Especilización',
+                                 choices=[('PAB', 'PAB'), ('APA', 'APA'), ('AEM', 'AEM'), ('TEM', 'TEM')])
+
+
+class AddTeamForm(Form):
+    type = SelectField('Tipo', choices=[('SB', 'Soporte Básico'), ('SA', 'Soporte Avanzado'), ('SV', 'Soporte Vital')])
+    available = BooleanField('Equipo disponible?')
+    fee = FloatField('Cargos', validators=[])
 
 
 class AddAmbulanceForm(Form):
-    license_plate = StringField('Número de placa',
-                                validators=[DataRequired(message='Debe especificar el número de placa')],
-                                render_kw={'placeholder': 'Número de placa'})
+    license_plate = IntegerField('Número de placa',
+                                 validators=[DataRequired(message='Debe especificar el número de placa')],
+                                 render_kw={'placeholder': 'Número de placa'})
     brand = StringField('Marca',
                         validators=[DataRequired(message='Debe especificar la marca del vehículo'),
                                     length(max=45, message='Marca inválida')],

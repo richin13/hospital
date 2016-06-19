@@ -23,7 +23,7 @@ class Employee(db.Model):
     }
 
     __table_args__ = (
-        db.CheckConstraint('salary > 0')
+        db.CheckConstraint('salary > 0'),
     )
 
     def __init__(self, dni, name, ln, addr, pn, salary, available, _type):
@@ -43,7 +43,7 @@ class Driver(Employee):
     """
     __tablename__ = 'driver'
 
-    dni = db.Column(db.Integer, db.ForeignKey('employee.id'), primary_key=True)
+    dni = db.Column(db.Integer, db.ForeignKey('employee.dni'), primary_key=True)
     start_hour = db.Column(db.Time)
     end_hour = db.Column(db.Time)
 
@@ -62,9 +62,9 @@ class Driver(Employee):
 class Paramedic(Employee):
     __tablename__ = 'paramedic'
 
-    dni = db.Column(db.Integer, db.ForeignKey('employee.id'), primary_key=True)
+    dni = db.Column(db.Integer, db.ForeignKey('employee.dni'), primary_key=True)
     specialization = db.Column(db.CHAR(3), nullable=False, default='UNK')
-    team_id = db.Column(db.Integer, db.ForeignKey('paramedic_team.id'))
+    team_id = db.Column(db.Integer, db.ForeignKey('paramedics_team.id'))
 
     __mapper_args__ = {
         'polymorphic_identity': 'paramedic'
@@ -75,7 +75,7 @@ class Paramedic(Employee):
             specialization = 'PAB' OR
             specialization = 'APA' OR
             specialization = 'AEM' OR
-            specialization = 'TEM'""")
+            specialization = 'TEM'"""),
     )
 
     def __init__(self, dni, name, ln, addr, pn, salary, available, _type, sh, eh):
@@ -99,7 +99,7 @@ class ParamedicTeam(db.Model):
         db.CheckConstraint("""
             type = 'SB' OR
             type = 'SA' OR
-            type = 'SV'""")
+            type = 'SV'"""),
     )
 
     def __init__(self, _type, available, of):

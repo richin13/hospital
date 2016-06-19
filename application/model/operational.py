@@ -11,7 +11,7 @@ class Ambulance(db.Model):
     mileage = db.Column(db.Integer, nullable=False)
     available = db.Column(db.Boolean, nullable=False)
 
-    driver_id = db.Column(db.Integer, db.ForeignKey('driver.id'))
+    driver_id = db.Column(db.Integer, db.ForeignKey('driver.dni'))
     dispatches = db.relationship('Dispatch', backref='ambulance')
 
     def __init__(self, plate_number, brand, model, mileage=0, available=True):
@@ -92,10 +92,12 @@ class Patient(db.Model):
 
 
 class Bill(db.Model):
+    __tablename__ = 'patient_bill'
+
     id = db.Column(db.Integer, primary_key=True)
     fee = db.Column(db.Float, nullable=False)
     covered_by_insurance = db.Column(db.Boolean, nullable=False)
-    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.dni'), nullable=False)
     emergency_id = db.Column(db.Integer, db.ForeignKey('emergency.id'), nullable=False)
 
     def __init__(self, fee, covered, patient, emergency):
@@ -114,7 +116,7 @@ class InsurancePlan(db.Model):
     description = db.Column(db.String(60), nullable=False)
 
     __table_args__ = (
-        db.CheckConstraint('category >= 1 AND category <= 4')
+        db.CheckConstraint('category >= 1 AND category <= 4'),
     )
 
     def __init__(self, category, coverage_percentage, description):

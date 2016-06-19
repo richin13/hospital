@@ -12,7 +12,7 @@ class Config(object):
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'mysql://user@localhost/foo'
+    SQLALCHEMY_DATABASE_URI = os.environ['MSSQL_CONN_STR']
 
 
 class DevelopmentConfig(Config):

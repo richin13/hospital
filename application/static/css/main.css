@@ -3,3 +3,7 @@
     min-height: 100vh !important;
     flex-direction: column !important;
 }
+
+.panel-header {
+    border-bottom: 2px #db2828 solid !important;
+}

@@ -32,8 +32,8 @@ class Employee(db.Model):
         self.last_name = ln
         self.address = addr
         self.phone_number = pn
-        self.salary = salary,
-        self.available = available,
+        self.salary = salary
+        self.available = available
         self.type = _type
 
 
@@ -106,3 +106,14 @@ class ParamedicTeam(db.Model):
         self.type = _type
         self.available = available
         self.operation_fee = of
+
+    def _pretty_type(self):
+        if self.type == 'SB':
+            return 'Soporte Básico'
+        elif self.type == 'SA':
+            return 'Soporte Avanzado'
+        else:
+            return 'Soporte Vital'
+
+    def __repr__(self):
+        return 'Equpo %s: %s' % (self.id, self._pretty_type())

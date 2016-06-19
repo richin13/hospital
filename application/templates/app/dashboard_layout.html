@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <div class="ui grid">
+        <div class="three wide column">
+            <div class="ui vertical menu">
+                {% block vertical_menu %}{% endblock %}
+
+            </div>
+        </div>
+        <div class="twelve wide column">
+            {% block panel_content %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

@@ -13,7 +13,7 @@ class User(db.Model, UserMixin):
     genre = db.Column(db.CHAR(1), db.CheckConstraint('genre in (\'M\', \'F\')'), nullable=False)
     username = db.Column(db.String(80), nullable=False, unique=True)
     email = db.Column(db.String(120), nullable=False, unique=True)
-    _password = db.Column(db.String(128), nullable=False)
+    _password = db.Column('password', db.String(128), nullable=False)
 
     def __init__(self, name, last_name, genre, username, email, pw):
         self.name = name

@@ -168,3 +168,13 @@ CREATE TABLE patient_bill (
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
+
+CREATE TABLE users (
+  id        INT PRIMARY KEY,
+  name      VARCHAR(32)  NOT NULL,
+  last_name VARCHAR(32)  NOT NULL,
+  genre     CHAR(1)      NOT NULL CHECK (genre = 'M' OR genre = 'F'),
+  username  VARCHAR(80)  NOT NULL UNIQUE,
+  email     VARCHAR(120) NOT NULL UNIQUE,
+  password  VARCHAR(128) NOT NULL
+)

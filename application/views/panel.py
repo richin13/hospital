@@ -5,7 +5,7 @@ from application.forms.panel_forms import AddAmbulanceForm, AddDriverForm, AddPa
     DispatchForm
 from application.model.operational import Ambulance, Emergency, Dispatch
 from application.model.workforce import Driver, Paramedic, ParamedicTeam
-from model.places import Province, Canton
+from application.model.places import Province, Canton
 
 mod = flask.Blueprint('application.panel', __name__, url_prefix='/app/panel')
 

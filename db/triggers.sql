@@ -31,39 +31,79 @@ BEGIN CATCH
   ROLLBACK TRANSACTION;
 END CATCH
 
+
 CREATE TRIGGER update_completed_dispatch_data_and_ambulance_mileage
 ON dispatch
-AFTER UPDATE
+AFTER INSERT, UPDATE, DELETE
 AS
-  SET NOCOUNT ON
+SET NOCOUNT ON
 DECLARE
 @ambulance_id INT,
 @dispatch_distance INT,
 @id_params INT
 
 BEGIN TRY
-IF ((SELECT status
-     FROM inserted) = 4)
+
+IF EXISTS(SELECT *
+          FROM inserted)
+  BEGIN
+    IF EXISTS(SELECT *
+              FROM deleted)
+      BEGIN
+        IF ((SELECT status
+             FROM inserted) = 4)
+          BEGIN
+            SELECT
+                @ambulance_id = id_ambulance,
+                @dispatch_distance = distance,
+                @id_params = id_params_team
+            FROM inserted
+
+            BEGIN TRANSACTION;
+            UPDATE ambulance
+            SET mileage = mileage + @dispatch_distance
+            WHERE ambulance.id_ambulance = @ambulance_id
+            COMMIT TRANSACTION;
+
+            EXEC update_completed_dispatch_data @id_ambulance = @ambulance_id, @id_params_team = @id_params
+          END
+      END
+  END
+
+ELSE IF EXISTS(SELECT *
+               FROM inserted)
   BEGIN
     SELECT
         @ambulance_id = id_ambulance,
-        @dispatch_distance = distance,
         @id_params = id_params_team
     FROM inserted
 
-    BEGIN TRANSACTION;
-    UPDATE ambulance
-    SET mileage = mileage + @dispatch_distance
-    WHERE ambulance.id_ambulance = @ambulance_id
+    EXEC update_available_status @object = 'AMB', @object_id = @ambulance_id, @available = 0;
+    EXEC update_available_status @object = 'PARAM_T', @object_id = @id_params, @available = 0;
 
-    EXEC update_completed_dispatch_data @id_ambulance = @ambulance_id, @id_params_team = @id_params
-
-    COMMIT TRANSACTION;
   END
+
+ELSE IF EXISTS(SELECT *
+               FROM deleted)
+  BEGIN
+    IF ((SELECT status
+         FROM deleted) != 4)
+      BEGIN
+        SELECT
+            @ambulance_id = id_ambulance,
+            @id_params = id_params_team
+        FROM inserted
+
+        EXEC update_available_status @object = 'AMB', @object_id = @ambulance_id, @available = 1;
+        EXEC update_available_status @object = 'PARAM_T', @object_id = @id_params, @available = 1;
+      END
+  END
+
 END TRY
 BEGIN CATCH
   ROLLBACK TRANSACTION;
 END CATCH
+
 
 CREATE TRIGGER register_patient_admission
 ON patient_bill
@@ -89,41 +129,6 @@ VALUES (@id_patient, GETDATE(), @description)
 
 COMMIT TRANSACTION;
 
-END TRY
-BEGIN CATCH
-  ROLLBACK TRANSACTION;
-END CATCH
-
-
-CREATE TRIGGER update_status_after_dispatch
-ON dispatch
-AFTER INSERT
-AS
-  DECLARE
-  @id_ambulance INT,
-  @id_params_team INT
-BEGIN TRY
--- Only if status is 'en ruta'
-IF ((SELECT status
-     FROM inserted) = 1)
-  BEGIN
-    SELECT
-        @id_ambulance = id_ambulance,
-        @id_params_team = id_params_team
-    FROM inserted
-
-    BEGIN TRANSACTION;
-
-    UPDATE ambulance
-    SET available = 0
-    WHERE id_ambulance = @id_ambulance
-
-    UPDATE paramedics_team
-    SET available = 0
-    WHERE id_params_team = @id_params_team
-
-    COMMIT TRANSACTION;
-  END
 END TRY
 BEGIN CATCH
   ROLLBACK TRANSACTION;

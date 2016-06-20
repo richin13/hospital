@@ -154,15 +154,12 @@ CREATE TABLE dispatch (
   PRIMARY KEY (id_ambulance, id_params_team, id_emergency),
   CONSTRAINT dispatch_ambulance_FK FOREIGN KEY (id_ambulance)
   REFERENCES ambulance (id_ambulance)
-    ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT dispatch_params_FK FOREIGN KEY (id_params_team)
   REFERENCES paramedics_team (id_params_team)
-    ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT dispatch_emergency_FK FOREIGN KEY (id_emergency)
   REFERENCES emergency (id_emergency)
-    ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT ck_dispatch_type CHECK (
     status >= 1 AND status <= 5

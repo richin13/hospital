@@ -21,11 +21,11 @@ def index():
 def dispatch():
     form = DispatchForm()
 
-    form.emergency.province.choices = [(p.id, p.name) for p in Province.query.order_by('id')]
+    form.emergency.province.choices = [(p.id, p.name) for p in Province.query.order_by('id_province')]
     form.emergency.canton.choices = [(c.id, c.name) for c in Canton.query.order_by('name')]
 
     form.ambulance.choices = [(a.id, a.plate_number) for a in Ambulance.query.order_by('plate_number')]
-    form.team.choices = [(t.id, str(t)) for t in ParamedicTeam.query.order_by('id')]
+    form.team.choices = [(t.id, str(t)) for t in ParamedicTeam.query.order_by('id_params_team')]
 
     if form.validate_on_submit():
         e = Emergency(form.emergency.description.data, form.emergency.type.data, form.emergency.address.data,

@@ -50,7 +50,7 @@ class Driver(Employee):
     ambulance = db.relationship('Ambulance', backref='driver', uselist=False)
 
     __mapper_args__ = {
-        'polymorphic_identity': 'driver'
+        'polymorphic_identity': 'DRV'
     }
 
     def __init__(self, dni, name, ln, addr, pn, salary, available, _type, sh, eh):
@@ -64,10 +64,10 @@ class Paramedic(Employee):
 
     dni = db.Column(db.Integer, db.ForeignKey('employee.dni'), primary_key=True)
     specialization = db.Column(db.CHAR(3), nullable=False, default='UNK')
-    team_id = db.Column(db.Integer, db.ForeignKey('paramedics_team.id'))
+    team_id = db.Column(db.Integer, db.ForeignKey('paramedics_team.id_params_team'))
 
     __mapper_args__ = {
-        'polymorphic_identity': 'paramedic'
+        'polymorphic_identity': 'PRM'
     }
 
     __table_args__ = (
@@ -78,16 +78,15 @@ class Paramedic(Employee):
             specialization = 'TEM'"""),
     )
 
-    def __init__(self, dni, name, ln, addr, pn, salary, available, _type, sh, eh):
+    def __init__(self, dni, name, ln, addr, pn, salary, available, _type, specialization):
         super(Paramedic, self).__init__(dni, name, ln, addr, pn, salary, available, _type)
-        self.start_hour = sh
-        self.end_hour = eh
+        self.specialization = specialization
 
 
 class ParamedicTeam(db.Model):
     __tablename__ = 'paramedics_team'
 
-    id = db.Column(db.Integer, nullable=False, primary_key=True)
+    id = db.Column('id_params_team', db.Integer, nullable=False, primary_key=True)
     type = db.Column(db.String(2), nullable=False)
     available = db.Column(db.Boolean, nullable=False)
     operation_fee = db.Column(db.Float, nullable=False)

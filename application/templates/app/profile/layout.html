@@ -3,6 +3,5 @@
 {% set p = current_page or 'index' %}
 {% block vertical_menu %}
     {{ macros.vertical_menu_item('index', 'Perfil', macros.profile_url(), p) }}
-    {{ macros.vertical_menu_item('dispatch', 'Editar perfil', macros.profile_url('edit'), p) }}
-    {{ macros.vertical_menu_item('ambulances', 'Agregar usuario', macros.profile_url('add'), p) }}
+    {{ macros.vertical_menu_item('users', 'Usuarios', macros.profile_url('users'), p) }}
 {% endblock %}

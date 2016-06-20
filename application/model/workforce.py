@@ -50,7 +50,7 @@ class Driver(Employee):
     ambulance = db.relationship('Ambulance', backref='driver', uselist=False)
 
     __mapper_args__ = {
-        'polymorphic_identity': 'driver'
+        'polymorphic_identity': 'DRV'
     }
 
     def __init__(self, dni, name, ln, addr, pn, salary, available, _type, sh, eh):
@@ -67,7 +67,7 @@ class Paramedic(Employee):
     team_id = db.Column(db.Integer, db.ForeignKey('paramedics_team.id_params_team'))
 
     __mapper_args__ = {
-        'polymorphic_identity': 'paramedic'
+        'polymorphic_identity': 'PRM'
     }
 
     __table_args__ = (
@@ -78,10 +78,9 @@ class Paramedic(Employee):
             specialization = 'TEM'"""),
     )
 
-    def __init__(self, dni, name, ln, addr, pn, salary, available, _type, sh, eh):
+    def __init__(self, dni, name, ln, addr, pn, salary, available, _type, specialization):
         super(Paramedic, self).__init__(dni, name, ln, addr, pn, salary, available, _type)
-        self.start_hour = sh
-        self.end_hour = eh
+        self.specialization = specialization
 
 
 class ParamedicTeam(db.Model):

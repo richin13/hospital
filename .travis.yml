@@ -2,7 +2,7 @@ language: python
 addons:
   apt:
     packages:
-    - freetds
+    - freetds-dev
 python:
   - "3.5"
 install: "pip install -r requirements.txt"

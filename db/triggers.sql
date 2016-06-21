@@ -1,19 +1,26 @@
-CREATE TRIGGER update_params_team_operation_fee
+-- All this sql code was required by our awesome professor,
+-- they are almost useless and have poor code quality, but for
+-- this professor crappy code means 'complex', so yeah just ignore them
+ALTER TRIGGER update_params_team_operation_fee
 ON paramedic
 AFTER INSERT
 AS
   DECLARE
   @team_id INT,
+  @param_id INT,
   @paramedic_salary FLOAT,
   @team_members_count INT
 
 BEGIN TRY
 SELECT
+    @param_id = inserted.dni,
     @team_id = inserted.id_params_team,
     @paramedic_salary = employee.salary
 FROM inserted
   INNER JOIN employee
     ON inserted.dni = employee.dni
+
+EXEC calc_employee_salary_pluses @employee_id = @param_id
 
 SELECT @team_members_count = (SELECT COUNT(*)
                               FROM paramedics_team

@@ -5,17 +5,16 @@ ALTER TRIGGER update_params_team_operation_fee
 ON paramedic
 AFTER INSERT
 AS
-  DECLARE
-  @team_id INT,
-  @param_id INT,
-  @paramedic_salary FLOAT,
-  @team_members_count INT
+DECLARE
+@team_id INT,
+@param_id INT,
+@paramedic_salary FLOAT,
+@team_members_count INT
 
 BEGIN TRY
 SELECT
     @param_id = inserted.dni,
-    @team_id = inserted.id_params_team,
-    @paramedic_salary = employee.salary
+    @team_id = inserted.id_params_team
 FROM inserted
   INNER JOIN employee
     ON inserted.dni = employee.dni
@@ -25,6 +24,9 @@ EXEC calc_employee_salary_pluses @employee_id = @param_id
 SELECT @team_members_count = (SELECT COUNT(*)
                               FROM paramedics_team
                               WHERE id_params_team = @team_id)
+
+-- Get salary ofter pluses are calculated
+SELECT @paramedic_salary = (SELECT salary FROM employee WHERE employee.dni = @param_id)
 
 BEGIN TRANSACTION;
 
@@ -43,10 +45,11 @@ CREATE TRIGGER update_completed_dispatch_data_and_ambulance_mileage
 ON dispatch
 AFTER INSERT, UPDATE, DELETE
 AS
-SET NOCOUNT ON
+  SET NOCOUNT ON
 DECLARE
 @ambulance_id INT,
 @dispatch_distance INT,
+@emergency_id INT,
 @id_params INT
 
 BEGIN TRY
@@ -62,6 +65,7 @@ IF EXISTS(SELECT *
           BEGIN
             SELECT
                 @ambulance_id = id_ambulance,
+                @emergency_id = id_emergency,
                 @dispatch_distance = distance,
                 @id_params = id_params_team
             FROM inserted
@@ -72,7 +76,8 @@ IF EXISTS(SELECT *
             WHERE ambulance.id_ambulance = @ambulance_id
             COMMIT TRANSACTION;
 
-            EXEC update_completed_dispatch_data @id_ambulance = @ambulance_id, @id_params_team = @id_params
+            EXEC update_completed_dispatch_data @id_ambulance = @ambulance_id, @id_params_team = @id_params,
+                                                @id_emergency = @emergency_id
           END
       END
   END
@@ -140,3 +145,95 @@ END TRY
 BEGIN CATCH
   ROLLBACK TRANSACTION;
 END CATCH
+
+ALTER TRIGGER update_params_team_fee_on_param_specialization_change
+ON paramedic
+AFTER UPDATE
+AS
+  DECLARE
+    @team_id INT,
+    @param_id INT,
+    @previuos_specialization CHAR(3),
+    @specialization CHAR(3),
+    @old_salary_plus INT,
+    @new_salary_plus INT,
+    @team_members_count INT
+
+  BEGIN TRY
+    SELECT @previuos_specialization = (SELECT specialization FROM deleted)
+    SELECT @specialization = (SELECT specialization FROM inserted)
+
+    IF (@previuos_specialization != @specialization)
+        BEGIN
+          SELECT
+            @param_id = inserted.dni,
+            @team_id = inserted.id_params_team
+          FROM inserted
+
+          -- Get new salary plus
+          IF (@specialization = 'PAB')
+            BEGIN
+              SET @new_salary_plus = 300000
+            END
+
+          ELSE IF (@specialization = 'APA')
+            BEGIN
+              SET @new_salary_plus = 280000
+            END
+
+          ELSE IF (@specialization = 'AEM')
+            BEGIN
+              SET @new_salary_plus = 420000
+            END
+
+          ELSE IF (@specialization = 'TEM')
+            BEGIN
+              SET @new_salary_plus = 490000
+            END
+
+          -- Get old salary plus
+          IF (@previuos_specialization = 'PAB')
+            BEGIN
+              SET @old_salary_plus = 300000
+            END
+
+          ELSE IF (@previuos_specialization = 'APA')
+            BEGIN
+              SET @old_salary_plus = 280000
+            END
+
+          ELSE IF (@previuos_specialization = 'AEM')
+            BEGIN
+              SET @old_salary_plus = 420000
+            END
+
+          ELSE IF (@previuos_specialization = 'TEM')
+            BEGIN
+              SET @old_salary_plus = 490000
+            END
+
+          -- Subtract old plus from salary and add new salary plus
+          BEGIN TRANSACTION;
+
+          UPDATE employee
+          SET salary = salary - @old_salary_plus
+          WHERE employee.dni = @param_id
+
+          UPDATE employee
+          SET salary = salary + @new_salary_plus
+          WHERE employee.dni = @param_id
+
+          SELECT @team_members_count = (SELECT COUNT(*)
+                              FROM paramedics_team
+                              WHERE id_params_team = @team_id)
+
+          UPDATE paramedics_team
+          SET operation_fee = (operation_fee - @old_salary_plus) + @new_salary_plus / @team_members_count
+          WHERE id_params_team = @team_id
+
+          COMMIT TRANSACTION;
+      END
+  END TRY
+  BEGIN CATCH
+    ROLLBACK TRANSACTION;
+  END CATCH

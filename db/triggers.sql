@@ -19,19 +19,16 @@ FROM inserted
   INNER JOIN employee
     ON inserted.dni = employee.dni
 
-EXEC calc_employee_salary_pluses @employee_id = @param_id
-
 SELECT @team_members_count = (SELECT COUNT(*)
-                              FROM paramedics_team
+                              FROM paramedic
                               WHERE id_params_team = @team_id)
 
--- Get salary ofter pluses are calculated
 SELECT @paramedic_salary = (SELECT salary FROM employee WHERE employee.dni = @param_id)
 
 BEGIN TRANSACTION;
 
 UPDATE paramedics_team
-SET operation_fee = (operation_fee + @paramedic_salary) / @team_members_count
+SET operation_fee = ((operation_fee + @paramedic_salary) / @team_members_count)
 WHERE id_params_team = @team_id
 
 COMMIT TRANSACTION;
@@ -157,6 +154,7 @@ AS
     @specialization CHAR(3),
     @old_salary_plus INT,
     @new_salary_plus INT,
+    @team_salary_total FLOAT,
     @team_members_count INT
 
   BEGIN TRY
@@ -224,11 +222,17 @@ AS
           WHERE employee.dni = @param_id
 
           SELECT @team_members_count = (SELECT COUNT(*)
-                              FROM paramedics_team
-                              WHERE id_params_team = @team_id)
+                                        FROM paramedic
+                                        WHERE id_params_team = @team_id)
+
+          SELECT @team_salary_total = (SELECT SUM(salary)
+                                       FROM employee
+                                         INNER JOIN paramedic ON employee.dni = paramedic.dni
+                                       GROUP BY id_params_team
+                                       HAVING paramedic.id_params_team = @team_id)
 
           UPDATE paramedics_team
-          SET operation_fee = (operation_fee - @old_salary_plus) + @new_salary_plus / @team_members_count
+            SET operation_fee = (@team_salary_total / @team_members_count)
           WHERE id_params_team = @team_id
 
           COMMIT TRANSACTION;

@@ -29,9 +29,6 @@ app.register_blueprint(profile.mod)
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
 
-# custom filter
-from .util import filters
-
 
 @login_manager.user_loader
 def load_user(uid):

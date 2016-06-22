@@ -10,3 +10,14 @@ def available(assets):
         if a.available:
             result += 1
     return result
+
+
+@app.template_filter('completed')
+def completed_emergencies(dispatches):
+    if type(dispatches) is not list:
+        raise TypeError('Argument assets is not a list')
+    result = 0
+    for d in dispatches:
+        if d.status == 4:
+            result += 1
+    return result

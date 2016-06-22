@@ -69,6 +69,20 @@ class Dispatch(db.Model):
         self.status = status
         self.fee = fee
 
+    def pretty_status(self):
+        if self.status == 1:
+            return 'En ruta'
+        elif self.status == 2:
+            return 'En el sitio'
+        elif self.status == 3:
+            return 'Volviendo'
+        elif self.status == 4:
+            return 'Completado'
+        elif self.status == 5:
+            return 'Cancelado'
+        else:
+            raise AttributeError('status should be some number between 1 and 5')
+
 
 class Patient(db.Model):
     __tablename__ = 'patient'

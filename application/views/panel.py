@@ -7,6 +7,9 @@ from application.model.operational import Ambulance, Emergency, Dispatch
 from application.model.workforce import Driver, Paramedic, ParamedicTeam
 from application.model.places import Province, Canton
 
+# custom filter
+from application.util import filters
+
 mod = flask.Blueprint('application.panel', __name__, url_prefix='/app/panel')
 
 
@@ -14,8 +17,19 @@ mod = flask.Blueprint('application.panel', __name__, url_prefix='/app/panel')
 @flask_login.login_required
 def index():
     emergencies = Emergency.query.all()
+    _teams = ParamedicTeam.query.all()
+    _paramedics = Paramedic.query.all()
+    _ambulances = Ambulance.query.all()
+    _drivers = Driver.query.all()
+    dispatches = Dispatch.query.all()
 
-    return flask.render_template('app/panel/index.html', title='Panel', current_page='index', emergencies=emergencies)
+    return flask.render_template('app/panel/index.html', title='Panel', current_page='index',
+                                 emergencies=emergencies,
+                                 teams=_teams,
+                                 paramedics=_paramedics,
+                                 ambulances=_ambulances,
+                                 drivers=_drivers,
+                                 dispatches=dispatches)
 
 
 @mod.route('/dispatch', methods=['GET', 'POST'])

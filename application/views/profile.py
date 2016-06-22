@@ -7,13 +7,13 @@ from application.model.app_model import User
 mod = flask.Blueprint('application.profile', __name__, url_prefix='/app/profile')
 
 
-@mod.route('/')
+@mod.route('/', methods=['GET', 'POST'])
 @flask_login.login_required
 def index():
     form = RegistrationForm()
 
     if form.validate_on_submit():
-        u = User.query.find_by(username=flask_login.current_user.username).first()
+        u = User.query.filter_by(username=flask_login.current_user.username).first()
         u.name = form.name.data
         u.last_name = form.last_name.data
         u.genre = form.genre.data
@@ -24,8 +24,10 @@ def index():
         flask.flash('Se guardaron los cambios', 'info')
         return flask.redirect(flask.url_for('application.profile.index'))
 
+    jscripts = ['update_profile.js']
+
     return flask.render_template('app/profile/index.html', title=flask_login.current_user.username,
-                                 current_page='index', user=flask_login.current_user, form=form)
+                                 current_page='index', user=flask_login.current_user, form=form, jscripts=jscripts)
 
 
 @mod.route('/users', methods=['GET', 'POST'])

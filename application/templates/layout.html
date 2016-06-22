@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% set filename = 'img/male.png' if current_user.genre == 'M' else 'img/female.png' %}
 {% if current_user.is_authenticated %}
     {% set endpoint_home = url_for('application.panel.index') %}
 {% else %}
@@ -15,7 +16,10 @@
             <a href="{{ url_for('landing.contact') }}" class="item">Contacto</a>
             {% if current_user.is_authenticated %}
                 <div class="ui floating dropdown link item" id="user-dropdown">
-                    <span class="text">{{ current_user.username | upper }}</span>
+                    <div class="text">
+                        <img src="{{ url_for('static', filename=filename) }}" alt="avatar" class="ui avatar image">
+                        {{ current_user.username | upper }}
+                    </div>
                     <i class="dropdown icon"></i>
                     <div class="menu">
                         <a href="{{ url_for('application.panel.index') }}" class="item">

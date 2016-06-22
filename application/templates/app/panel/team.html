@@ -21,11 +21,11 @@
                     {{ form.hidden_tag() }}
                     <div class="two fields">
                         <div class="field">
-                            <label>{{ form.type.label }}</label>
+                            {{ form.type.label }}
                             {{ form.type(class_='ui dropdown') }}
                         </div>
                         <div class="field">
-                            <label>{{ form.fee.label }}</label>
+                            {{ form.fee.label }}
                             {{ form.fee }}
                         </div>
                     </div>

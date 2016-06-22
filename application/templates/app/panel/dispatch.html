@@ -21,52 +21,52 @@
                     {{ form.hidden_tag() }}
                     <h3 class="ui header">Detalles de la emergencia</h3>
                     <div class="field">
-                        <label>{{ form.emergency.description.label }}</label>
+                        {{ form.emergency.description.label }}
                         {{ form.emergency.description }}
                     </div>
                     <div class="field">
-                        <label>{{ form.emergency.address.label }}</label>
+                        {{ form.emergency.address.label }}
                         {{ form.emergency.address }}
                     </div>
                     <div class="field">
-                        <label>{{ form.emergency.e_type.label }}</label>
+                        {{ form.emergency.e_type.label }}
                         {{ form.emergency.e_type }}
                     </div>
                     <div class="two fields">
                         <div class="field">
-                            <label>{{ form.emergency.province.label }}</label>
+                            {{ form.emergency.province.label }}
                             {{ form.emergency.province(class_='ui dropdown') }}
                         </div>
                         <div class="field">
-                            <label>{{ form.emergency.canton.label }}</label>
+                            {{ form.emergency.canton.label }}
                             {{ form.emergency.canton(class_='ui dropdown') }}
                         </div>
                     </div>
                     <h3 class="ui header">Detalles del despacho</h3>
                     <div class="field">
-                        <label>{{ form.ambulance.label }}</label>
+                        {{ form.ambulance.label }}
                         {{ form.ambulance(class_='ui dropdown') }}
                     </div>
                     <div class="field">
-                        <label>{{ form.team.label }}</label>
+                        {{ form.team.label }}
                         {{ form.team(class_='ui dropdown') }}
                     </div>
                     <div class="two fields">
                         <div class="field">
-                            <label>{{ form.dispatch_hour.label }}</label>
+                            {{ form.dispatch_hour.label }}
                             {{ form.dispatch_hour }}
                         </div>
                         <div class="field">
-                            <label>{{ form.arrival_hour.label }}</label>
+                            {{ form.arrival_hour.label }}
                             {{ form.arrival_hour }}
                         </div>
                     </div>
                     <div class="field">
-                        <label>{{ form.status.label }}</label>
+                        {{ form.status.label }}
                         {{ form.status(class_='ui dropdown') }}
                     </div>
                     <div class="field">
-                        <label>{{ form.distance.label }} (Aprox. en KM)</label>
+                        {{ form.distance.label }} (Aprox. en KM)
                         {{ form.distance }}
                     </div>
                     <input type="submit" value="Guardar" class="ui red button">

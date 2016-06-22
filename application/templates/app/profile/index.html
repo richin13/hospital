@@ -58,29 +58,29 @@
                         {{ form.hidden_tag() }}
                         <div class="two fields">
                             <div class="field">
-                                <label>{{ form.name.label }}</label>
+                                {{ form.name.label }}
                                 {{ form.name }}
                             </div>
                             <div class="field">
-                                <label>{{ form.last_name.label }}</label>
+                                {{ form.last_name.label }}
                                 {{ form.last_name }}
                             </div>
                         </div>
                         <div class="field">
-                            <label>{{ form.gender.label }}</label>
+                            {{ form.gender.label }}
                             {{ form.gender(class_='ui dropdown') }}
                         </div>
                         <div class="field">
-                            <label>{{ form.email.label }}</label>
+                            {{ form.email.label }}
                             {{ form.email }}
                         </div>
                         <div class="two fields">
                             <div class="field">
-                                <label>{{ form.username.label }}</label>
+                                {{ form.username.label }}
                                 {{ form.username }}
                             </div>
                             <div class="field">
-                                <label>{{ form.password.label }}</label>
+                                {{ form.password.label }}
                                 {{ form.password }}
                             </div>
                         </div>

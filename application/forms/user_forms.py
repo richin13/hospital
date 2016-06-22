@@ -4,10 +4,9 @@ from wtforms.validators import DataRequired, Email
 
 
 class LoginForm(Form):
-    email = StringField('Correo electrónico',
-                        validators=[DataRequired(message='El correo electrónico es requerido'),
-                                    Email(message='Debe ingresar un correo electrónico válido')],
-                        render_kw={'placeholder': 'Correo electrónico'})
+    username_email = StringField('Usuario/Correo electrónico',
+                                 validators=[DataRequired(message='El campo de usuario/correo electrónico es requerido')],
+                                 render_kw={'placeholder': 'Nombre de usuario o e-mail'})
     password = PasswordField('Contraseña', validators=[DataRequired(message='La contraseña es requerida')],
                              render_kw={'placeholder': 'Contraseña'})
 

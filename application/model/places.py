@@ -7,7 +7,7 @@ class Province(db.Model):
     """
     __tablename__ = 'province'
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=False)
+    id = db.Column('id_province', db.Integer, primary_key=True, autoincrement=False)
     name = db.Column(db.String(30), nullable=False)
     cantons = db.relationship('Canton', backref='province')
 
@@ -25,15 +25,15 @@ class Canton(db.Model):
     """
     __tablename__ = 'canton'
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column('id_canton', db.Integer, primary_key=True)
     name = db.Column(db.String(60), nullable=False)
-    province_id = db.Column(db.Integer, db.ForeignKey('province.id'), nullable=False)
+    id_province = db.Column(db.Integer, db.ForeignKey('province.id_province'), nullable=False)
 
     emergency = db.relationship('Emergency', uselist=False)
 
     def __init__(self, name, province):
         self.name = name
-        self.province_id = province
+        self.id_province = province
 
     def __repr__(self):
         return '%s, %s' % (self.name, self.province.name)

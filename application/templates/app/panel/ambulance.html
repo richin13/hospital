@@ -20,26 +20,26 @@
                 <form method="POST" class="ui form">
                     {{ form.hidden_tag() }}
                     <div class="field">
-                        <label>{{ form.license_plate.label }}</label>
+                        {{ form.license_plate.label }}
                         {{ form.license_plate }}
                     </div>
                     <div class="two fields">
                         <div class="field">
-                            <label>{{ form.brand.label }}</label>
+                            {{ form.brand.label }}
                             {{ form.brand }}
                         </div>
                         <div class="field">
-                            <label>{{ form.model.label }}</label>
+                            {{ form.model.label }}
                             {{ form.model }}
                         </div>
                     </div>
                     <div class="field">
-                        <label>{{ form.mileage.label }}</label>
+                        {{ form.mileage.label }}
                         {{ form.mileage }}
                     </div>
                     <div class="field">
-                        <label>{{ form.available.label }}</label>
-                        {{ form.available }}
+                        {{ form.driver.label }}
+                        {{ form.driver(class_='ui dropdown') }}
                     </div>
                     <input type="submit" value="Guardar" class="ui red button">
                 </form>
@@ -69,7 +69,7 @@
                         </div>
                     </div>
                     <div class="statistic">
-                        <div class="value">{{ available | length }}</div>
+                        <div class="value">{{ ambulances | available_assets }}</div>
                         <div class="label">Disponibles</div>
                     </div>
                 </div>

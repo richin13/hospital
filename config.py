@@ -7,7 +7,7 @@ class Config(object):
     WTF_CSRF_ENABLED = True
     DEBUG = False
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///foo.db'
+    SQLALCHEMY_DATABASE_URI = os.environ['PGSQL_URI']
     BCRYPT_LOG_ROUNDS = 12
 
 

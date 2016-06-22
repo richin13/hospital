@@ -14,6 +14,7 @@
 
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     {% endblock %}
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo.png') }}">
 </head>
 <body>
 <div class="container" id="main">
@@ -33,7 +34,7 @@
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     {% if jscripts %}
         {% for s in jscripts %}
-            <script src="js/{{ s }}"></script>
+            <script src="{{ url_for('static', filename='js/' + s) }}"></script>
         {% endfor %}
     {% endif %}
 {% endblock %}

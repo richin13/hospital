@@ -1,5 +1,6 @@
 import flask
 import flask_login
+from sqlalchemy import or_
 from ..forms.user_forms import LoginForm
 from application.model.app_model import User
 
@@ -23,7 +24,8 @@ def login():
     error = False
 
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = User.query.filter(
+            or_(User.email == form.username_email.data, User.username == form.username_email.data)).first()
 
         if user and user.validate_password(form.password.data):
             flask_login.login_user(user)

@@ -3,7 +3,135 @@
     <div class="ui vertical segment">
         <div class="ui container">
             <h1 class="ui header">Panel de administración</h1>
-            <p>If you can see this, then you're logged in ;)</p>
+            <div class="ui vertical segment">
+                <h2 class="ui header panel-header">Secciones</h2>
+                <div class="ui divided items">
+                    <div class="item">
+                        <div class="ui image">
+                            <img src="{{ url_for('static', filename='img/emergency.png') }}" alt="emergency">
+                        </div>
+                        <div class="content">
+                            <div class="header">Emergencias</div>
+                            <div class="description">
+                                <div class="ui statistics">
+                                    <div class="statistic">
+                                        <div class="value">
+                                            {{ emergencies | length }}
+                                        </div>
+                                        <div class="label">
+                                            Emergencias
+                                        </div>
+                                    </div>
+                                    <div class="statistic">
+                                        <div class="value">{{ dispatches | completed }}</div>
+                                        <div class="label">Completadas</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="extra">
+                                <a href="{{ url_for('application.panel.dispatch') }}"
+                                   class="ui right floated red button">Ir</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="ui image">
+                            <img src="{{ url_for('static', filename='img/teams.png') }}" alt="team">
+                        </div>
+                        <div class="content">
+                            <div class="header">Equipos de paramédicos</div>
+                            <div class="description">
+                                <div class="ui statistics">
+                                    <div class="statistic">
+                                        <div class="value">{{ teams | length }}</div>
+                                        <div class="label">Equipos</div>
+                                    </div>
+                                    <div class="statistic">
+                                        <div class="value">{{ teams | available_assets }}</div>
+                                        <div class="label">Disponibles</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="extra">
+                                <a href="{{ url_for('application.panel.teams') }}"
+                                   class="ui right floated red button">Ir</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="ui image">
+                            <img src="{{ url_for('static', filename='img/paramedic.png') }}" alt="paramedic">
+                        </div>
+                        <div class="content">
+                            <div class="header">Paramédicos</div>
+                            <div class="description">
+                                <div class="ui statistics">
+                                    <div class="statistic">
+                                        <div class="value">{{ paramedics | length }}</div>
+                                        <div class="label">Paramédicos</div>
+                                    </div>
+                                    <div class="statistic">
+                                        <div class="value">{{ paramedics | available_assets }}</div>
+                                        <div class="label">Disponibles</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="extra">
+                                <a href="{{ url_for('application.panel.paramedics') }}"
+                                   class="ui right floated red button">Ir</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="ui image">
+                            <img src="{{ url_for('static', filename='img/ambulance.png') }}" alt="ambulance">
+                        </div>
+                        <div class="content">
+                            <div class="header">Ambulancias</div>
+                            <div class="description">
+                                <div class="ui statistics">
+                                    <div class="statistic">
+                                        <div class="value">{{ ambulances | length }}</div>
+                                        <div class="label">Ambulancias</div>
+                                    </div>
+                                    <div class="statistic">
+                                        <div class="value">{{ ambulances | available_assets }}</div>
+                                        <div class="label">Disponibles</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="extra">
+                                <a href="{{ url_for('application.panel.ambulances') }}"
+                                   class="ui right floated red button">Ir</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="ui image">
+                            <img src="{{ url_for('static', filename='img/driver.png') }}" alt="driver">
+                        </div>
+                        <div class="content">
+                            <div class="header">Conductores</div>
+                            <div class="description">
+                                <div class="ui statistics">
+                                    <div class="statistic">
+                                        <div class="value">{{ drivers | length }}</div>
+                                        <div class="label">Conductores</div>
+                                    </div>
+                                    <div class="statistic">
+                                        <div class="value">{{ drivers | available_assets }}</div>
+                                        <div class="label">Disponibles</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="extra">
+                                <a href="{{ url_for('application.panel.drivers') }}"
+                                   class="ui right floated red button">Ir</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

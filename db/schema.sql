@@ -1,4 +1,3 @@
-
 CREATE TABLE province (
   id_province INT         NOT NULL PRIMARY KEY,
   name        VARCHAR(30) NOT NULL
@@ -60,17 +59,26 @@ CREATE TABLE employee (
   phone_number VARCHAR(10)  NOT NULL DEFAULT ('N/A'),
   salary       FLOAT        NOT NULL,
   available    BIT          NOT NULL,
-  type         CHAR(3)      NOT NULL,
-  CONSTRAINT ck_salary CHECK (salary > 0)
+  type         CHAR(3),
+  CONSTRAINT ck_salary CHECK (salary > 0),
+  CONSTRAINT ck_employee_type CHECK(type = 'DRV' OR type = 'PRM')
 );
 
 CREATE TABLE driver (
-  dni        INT PRIMARY KEY,
-  start_hour TIME NOT NULL,
-  end_hour   TIME NOT NULL,
+  dni          INT PRIMARY KEY,
+  start_hour   TIME NOT NULL,
+  end_hour     TIME NOT NULL,
+  licence_type CHAR(2),
   CONSTRAINT fk_employee_driver FOREIGN KEY (dni) REFERENCES employee (dni)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
+  CONSTRAINT ck_licence_type CHECK (
+    licence_type LIKE 'A[1-3]' OR
+    licence_type LIKE 'B[1-3]' OR
+    licence_type LIKE 'C[2]' OR
+    licence_type LIKE 'D[1-3]' OR
+    licence_type LIKE 'E[1]'
+  )
 );
 
 CREATE TABLE paramedics_team (
@@ -148,15 +156,12 @@ CREATE TABLE dispatch (
   PRIMARY KEY (id_ambulance, id_params_team, id_emergency),
   CONSTRAINT dispatch_ambulance_FK FOREIGN KEY (id_ambulance)
   REFERENCES ambulance (id_ambulance)
-    ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT dispatch_params_FK FOREIGN KEY (id_params_team)
   REFERENCES paramedics_team (id_params_team)
-    ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT dispatch_emergency_FK FOREIGN KEY (id_emergency)
   REFERENCES emergency (id_emergency)
-    ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT ck_dispatch_type CHECK (
     status >= 1 AND status <= 5

@@ -32,7 +32,7 @@ class User(db.Model, UserMixin):
         self._password = bcrypt.generate_password_hash(pw)
 
     def validate_password(self, password):
-        return bcrypt.check_password_hash(self.password, password)
+        return bcrypt.check_password_hash(bytes(self.password), password)
 
     def __repr__(self):
         return 'User <%r>' % self.username

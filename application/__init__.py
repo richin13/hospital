@@ -8,17 +8,17 @@ app.config.from_object('config.DevelopmentConfig')
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
-from application.model.app_model import User
+from .model.app_model import User
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'application.login'
 
 # Blueprints registration
-from application.views import landing
-from application.views import app_views
-from application.views import panel
-from application.views import profile
+from .views import landing
+from .views import app_views
+from .views import panel
+from .views import profile
 
 app.register_blueprint(landing.mod)
 app.register_blueprint(app_views.mod)

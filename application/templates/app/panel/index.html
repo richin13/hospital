@@ -3,7 +3,22 @@
     <div class="ui vertical segment">
         <div class="ui container">
             <h1 class="ui header">Panel de administración</h1>
-            <p>If you can see this, then you're logged in ;)</p>
+            <div class="ui vertical segment">
+                <h2 class="ui header panel-header">Secciones</h2>
+                <div class="ui items">
+                    <div class="item">
+                        <div class="ui image">
+                            <img src="{{ url_for('static', filename='img/emergency.png') }}" alt="emergency">
+                        </div>
+                        <div class="content">
+                            <div class="header">Emergencias</div>
+                            <div class="description">
+                                {{ emergencies | available_assets }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -13,7 +13,9 @@ mod = flask.Blueprint('application.panel', __name__, url_prefix='/app/panel')
 @mod.route('/')
 @flask_login.login_required
 def index():
-    return flask.render_template('app/panel/index.html', title='Panel', current_page='index')
+    emergencies = Emergency.query.all()
+
+    return flask.render_template('app/panel/index.html', title='Panel', current_page='index', emergencies=emergencies)
 
 
 @mod.route('/dispatch', methods=['GET', 'POST'])
@@ -56,11 +58,10 @@ def ambulances():
         flask.flash('Ambulancia guardada correctamente', 'info')
         return flask.redirect(flask.url_for('application.panel.ambulances'))
 
-    ambs = Ambulance.query.all()
-    available = Ambulance.query.filter_by(available=True).all()
+    _ambulances = Ambulance.query.all()
 
     return flask.render_template('app/panel/ambulance.html', title='Panel/Ambulancias', current_page='ambulances',
-                                 form=form, ambulances=ambs, available=available)
+                                 form=form, ambulances=_ambulances)
 
 
 @mod.route('/paramedics', methods=['GET', 'POST'])
@@ -79,11 +80,10 @@ def paramedics():
         flask.flash('Paramédico agregado correctamente', 'info')
         return flask.redirect(flask.url_for('application.panel.paramedics'))
 
-    params = Paramedic.query.all()
-    available = Paramedic.query.filter_by(available=True).all()
+    _paramedics = Paramedic.query.all()
 
     return flask.render_template('app/panel/paramedic.html', title='Panel/Paramédicos', current_page='paramedics',
-                                 form=form, paramedics=params, available=available)
+                                 form=form, paramedics=_paramedics)
 
 
 @mod.route('teams', methods=['GET', 'POST'])
@@ -97,11 +97,10 @@ def teams():
         db.session.commit()
         return flask.redirect(flask.url_for('application.panel.teams'))
 
-    pteams = ParamedicTeam.query.all()
-    available = ParamedicTeam.query.filter_by(available=True).all()
+    _teams = ParamedicTeam.query.all()
 
     return flask.render_template('app/panel/team.html', title='Panel/Equipos', current_page='teams',
-                                 form=form, teams=pteams, available=available)
+                                 form=form, teams=_teams)
 
 
 @mod.route('/drivers', methods=['GET', 'POST'])
@@ -117,8 +116,7 @@ def drivers():
         flask.flash('Conductor agregado correctamente', 'info')
         return flask.redirect(flask.url_for('application.panel.drivers'))
 
-    drvs = Driver.query.all()
-    available = Driver.query.filter_by(available=True).all()
+    _drivers = Driver.query.all()
 
     return flask.render_template('app/panel/driver.html', title='Panel/Conductores', current_page='drivers',
-                                 form=form, drivers=drvs, available=available)
+                                 form=form, drivers=_drivers)

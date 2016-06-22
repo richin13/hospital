@@ -41,19 +41,19 @@
                         <label>{{ form.phone_number.label }}</label>
                         {{ form.phone_number }}
                     </div>
-                    <div class="two fields">
+                    <div class="three fields">
                         <div class="field">
                             <label>{{ form.salary.label }}</label>
                             {{ form.salary }}
                         </div>
                         <div class="field">
-                            <label>{{ form.available.label }}</label>
-                            {{ form.available }}
+                            <label>{{ form.specialization.label }}</label>
+                            {{ form.specialization(class_='ui dropdown') }}
                         </div>
-                    </div>
-                    <div class="field">
-                        <label>{{ form.specialization.label }}</label>
-                        {{ form.specialization }}
+                        <div class="field">
+                            <label>{{ form.team.label }}</label>
+                            {{ form.team(class_='ui dropdown') }}
+                        </div>
                     </div>
                     <input type="submit" value="Guardar" class="ui red button">
                 </form>

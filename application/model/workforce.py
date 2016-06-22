@@ -36,6 +36,9 @@ class Employee(db.Model):
         self.available = available
         self.type = _type
 
+    def __repr__(self):
+        return '%s %s' % (self.name, self.last_name)
+
 
 class Driver(Employee):
     """

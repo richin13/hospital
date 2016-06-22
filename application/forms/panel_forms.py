@@ -50,6 +50,7 @@ class AddDriverForm(AddEmployeeForm):
 class AddParamedicForm(AddEmployeeForm):
     specialization = SelectField('Especilización',
                                  choices=[('PAB', 'PAB'), ('APA', 'APA'), ('AEM', 'AEM'), ('TEM', 'TEM')])
+    team = SelectField('Equipo', coerce=int)
 
 
 class AddTeamForm(Form):
@@ -73,4 +74,4 @@ class AddAmbulanceForm(Form):
     mileage = IntegerField('Kilometraje',
                            validators=[NumberRange(min=0, message='El kilometraje debe ser positivo o 0')],
                            render_kw={'placeholder': 'Kilometraje'})
-    available = BooleanField('Disponible')
+    driver = SelectField('Conductor', coerce=int)

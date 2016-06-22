@@ -35,21 +35,21 @@
                     <div class="two fields">
                         <div class="field">
                             <label>{{ form.emergency.province.label }}</label>
-                            {{ form.emergency.province }}
+                            {{ form.emergency.province(class_='ui dropdown') }}
                         </div>
                         <div class="field">
                             <label>{{ form.emergency.canton.label }}</label>
-                            {{ form.emergency.canton }}
+                            {{ form.emergency.canton(class_='ui dropdown') }}
                         </div>
                     </div>
                     <h3 class="ui header">Detalles del despacho</h3>
                     <div class="field">
                         <label>{{ form.ambulance.label }}</label>
-                        {{ form.ambulance }}
+                        {{ form.ambulance(class_='ui dropdown') }}
                     </div>
                     <div class="field">
                         <label>{{ form.team.label }}</label>
-                        {{ form.team }}
+                        {{ form.team(class_='ui dropdown') }}
                     </div>
                     <div class="two fields">
                         <div class="field">
@@ -63,7 +63,7 @@
                     </div>
                     <div class="field">
                         <label>{{ form.status.label }}</label>
-                        {{ form.status }}
+                        {{ form.status(class_='ui dropdown') }}
                     </div>
                     <div class="field">
                         <label>{{ form.distance.label }} (Aprox. en KM)</label>

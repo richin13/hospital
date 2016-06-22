@@ -16,4 +16,6 @@ $(document).ready(function () {
             action: 'nothing'
         })
     ;
+
+    $('.ui.dropdown').dropdown();
 });

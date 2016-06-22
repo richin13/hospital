@@ -45,9 +45,12 @@ def dispatch():
 def ambulances():
     form = AddAmbulanceForm()
 
+    form.driver.choices = [(d.dni, str(d)) for d in Driver.query.order_by('name')]
+
     if form.validate_on_submit():
         ambulance = Ambulance(form.license_plate.data, form.brand.data, form.model.data, form.mileage.data,
-                              form.available.data)
+                              True)
+        ambulance.driver_id = form.driver.data
         db.session.add(ambulance)
         db.session.commit()
         flask.flash('Ambulancia guardada correctamente', 'info')
@@ -65,9 +68,12 @@ def ambulances():
 def paramedics():
     form = AddParamedicForm()
 
+    form.team.choices = [(t.id, str(t)) for t in ParamedicTeam.query.order_by('id_params_team')]
+
     if form.validate_on_submit():
         param = Paramedic(form.dni.data, form.name.data, form.last_name.data, form.address.data, form.phone_number.data,
                           form.salary.data, form.available.data, 'PRM', form.specialization.data)
+        param.id_params_team = form.team.data
         db.session.add(param)
         db.session.commit()
         flask.flash('Paramédico agregado correctamente', 'info')

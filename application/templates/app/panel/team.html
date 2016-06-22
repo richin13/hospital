@@ -22,16 +22,12 @@
                     <div class="two fields">
                         <div class="field">
                             <label>{{ form.type.label }}</label>
-                            {{ form.type }}
+                            {{ form.type(class_='ui dropdown') }}
                         </div>
                         <div class="field">
                             <label>{{ form.fee.label }}</label>
                             {{ form.fee }}
                         </div>
-                    </div>
-                    <div class="field">
-                        <label>{{ form.available.label }}</label>
-                        {{ form.available }}
                     </div>
                     <input type="submit" value="Guardar" class="ui red button">
                 </form>

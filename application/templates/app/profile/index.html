@@ -27,7 +27,7 @@
                             <div class="description">
                                 <div class="ui list">
                                     <div class="item">
-                                        {% if user.genre == 'M' %}
+                                        {% if user.gender == 'M' %}
                                             <i class="male icon"></i> Hombre
                                         {% else %}
                                             <i class="female icon"></i> Mujer
@@ -52,7 +52,7 @@
                     <form method="POST" class="ui form" id="update-profile-form"
                           data-default-name="{{ current_user.name }}"
                           data-default-last-name="{{ current_user.last_name }}"
-                          data-default-gender="{{ current_user.genre }}"
+                          data-default-gender="{{ current_user.gender }}"
                           data-default-email="{{ current_user.email }}"
                           data-default-username="{{ current_user.username }}">
                         {{ form.hidden_tag() }}
@@ -67,8 +67,8 @@
                             </div>
                         </div>
                         <div class="field">
-                            <label>{{ form.genre.label }}</label>
-                            {{ form.genre(class_='ui dropdown') }}
+                            <label>{{ form.gender.label }}</label>
+                            {{ form.gender(class_='ui dropdown') }}
                         </div>
                         <div class="field">
                             <label>{{ form.email.label }}</label>

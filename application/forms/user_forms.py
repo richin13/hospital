@@ -16,7 +16,7 @@ class RegistrationForm(Form):
                        render_kw={'placeholder': 'Nombre'})
     last_name = StringField('Apellido', validators=[DataRequired(message='Debe especificar el apellido')],
                             render_kw={'placeholder': 'Apellido'})
-    genre = SelectField('Género', choices=[('M', 'Masculino'), ('F', 'Femenino')])
+    gender = SelectField('Género', choices=[('M', 'Masculino'), ('F', 'Femenino')])
     email = StringField('Correo electrónico',
                         validators=[DataRequired(message='El correo electrónico es requerido'),
                                     Email(message='Debe ingresar un correo electrónico válido')],

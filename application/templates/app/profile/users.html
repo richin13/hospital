@@ -30,8 +30,8 @@
                         </div>
                     </div>
                     <div class="field">
-                        <label>{{ form.genre.label }}</label>
-                        {{ form.genre(class_='ui dropdown') }}
+                        <label>{{ form.gender.label }}</label>
+                        {{ form.gender(class_='ui dropdown') }}
                     </div>
                     <div class="field">
                         <label>{{ form.email.label }}</label>
@@ -68,7 +68,7 @@
                 <div class="separator"></div>
                 <div class="ui divided items">
                     {% for u in users %}
-                        {% set ug = 'img/male.png' if u.genre == 'M' else 'img/female.png' %}
+                        {% set ug = 'img/male.png' if u.gender == 'M' else 'img/female.png' %}
                         <div class="ui item">
                         <div class="ui image">
                             <img src="{{ url_for('static', filename=ug) }}" alt="">
@@ -78,7 +78,7 @@
                                 <div class="description">
                                     <div class="ui list">
                                         <div class="item">
-                                            {% if u.genre == 'M' %}
+                                            {% if u.gender == 'M' %}
                                                 <i class="male icon"></i> Hombre
                                             {% else %}
                                                 <i class="female icon"></i> Mujer

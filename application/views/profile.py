@@ -16,7 +16,7 @@ def index():
         u = User.query.filter_by(username=flask_login.current_user.username).first()
         u.name = form.name.data
         u.last_name = form.last_name.data
-        u.genre = form.genre.data
+        u.gender = form.gender.data
         u.email = form.email.data
         u.username = form.username.data
         u.password = form.password.data
@@ -36,7 +36,7 @@ def users():
     form = RegistrationForm()
 
     if form.validate_on_submit():
-        u = User(form.name.data, form.last_name.data, form.genre.data, form.email.data, form.username.data,
+        u = User(form.name.data, form.last_name.data, form.gender.data, form.email.data, form.username.data,
                  form.password.data)
         db.session.add(u)
         db.session.commit()

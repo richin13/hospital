@@ -1,11 +1,13 @@
 import flask
 import flask_login
+import application.util.reports as report
 from application import db
 from application.forms.panel_forms import AddAmbulanceForm, AddDriverForm, AddParamedicForm, AddTeamForm, \
     DispatchForm
 from application.model.operational import Ambulance, Emergency, Dispatch
 from application.model.workforce import Driver, Paramedic, ParamedicTeam
 from application.model.places import Province, Canton
+from sqlalchemy import desc
 
 # custom filter
 from application.util import filters
@@ -100,7 +102,7 @@ def paramedics():
                                  form=form, paramedics=_paramedics)
 
 
-@mod.route('teams', methods=['GET', 'POST'])
+@mod.route('/teams', methods=['GET', 'POST'])
 @flask_login.login_required
 def teams():
     form = AddTeamForm()
@@ -134,3 +136,23 @@ def drivers():
 
     return flask.render_template('app/panel/driver.html', title='Panel/Conductores', current_page='drivers',
                                  form=form, drivers=_drivers)
+
+
+@mod.route('/reports', methods=['GET'])
+@flask_login.login_required
+def reports():
+    top_km_amb = Ambulance.query.order_by(desc(Ambulance.mileage)).limit(1).all()
+    most_dispatched_ambulance = report.most_dispatched_ambulance()
+    most_profitable_ambulance = report.most_profitable_ambulance()
+
+    top_cost_param_team = ParamedicTeam.query.order_by(desc(ParamedicTeam.operation_fee)).limit(1).all()
+    most_dispatched_param_team = report.most_dispatched_paramedic_team()
+    most_profitable_param_team = report.most_profitable_paramedic_team()
+
+    return flask.render_template('app/panel/reports.html', title='Panel/Reportes', current_page='reports',
+                                 top_km_amb=top_km_amb,
+                                 most_dispatched_amb=most_dispatched_ambulance,
+                                 most_profitable_amb=most_profitable_ambulance,
+                                 most_expensive_team=top_cost_param_team,
+                                 most_dispatched_team=most_dispatched_param_team,
+                                 most_profitable_team=most_profitable_param_team)

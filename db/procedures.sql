@@ -89,7 +89,6 @@ WHERE dispatch.id_ambulance = @id_ambulance AND dispatch.id_params_team = @id_pa
 
 COMMIT TRANSACTION;
 
--- TODO: Call service fee calc procedure for patient bill
 EXEC update_available_status @object = 'AMB', @object_id = @id_ambulance, @available = 1;
 EXEC update_available_status @object = 'PARAM_T', @object_id = @id_params_team, @available = 1;
 
@@ -140,87 +139,201 @@ AS
 CREATE PROCEDURE calc_employee_salary_pluses
   @employee_id INT
 AS
-DECLARE
-@employee_type CHAR(3),
-@driver_licence CHAR(2),
-@param_type CHAR(3),
-@increment INT
-BEGIN TRY
+  DECLARE
+  @employee_type CHAR(3),
+  @driver_licence CHAR(2),
+  @param_type CHAR(3),
+  @increment INT
 
-SELECT @employee_type = (SELECT type
-                         FROM employee
-                         WHERE dni = @employee_id)
+  BEGIN TRY
 
-IF (@employee_type = 'DRV')
-  BEGIN
-    SELECT @driver_licence = (SELECT licence_type
-                              FROM driver
-                              WHERE dni = @employee_id);
+    SELECT @employee_type = (SELECT type
+                             FROM employee
+                             WHERE dni = @employee_id)
 
-    IF (@driver_licence LIKE 'B[1-3]')
+    IF (@employee_type = 'DRV')
       BEGIN
-        SET @increment = 80000
+        SELECT @driver_licence = (SELECT licence_type
+                                  FROM driver
+                                  WHERE dni = @employee_id);
+
+        IF (@driver_licence LIKE 'B[1-3]')
+          BEGIN
+            SET @increment = 80000
+          END
+
+        ELSE IF (@driver_licence = 'C1')
+          BEGIN
+            SET @increment = 95000
+          END
+
+        ELSE IF (@driver_licence LIKE 'D[1-3]')
+          BEGIN
+            SET @increment = 105000
+          END
+
+        ELSE IF (@driver_licence = 'E1')
+          BEGIN
+            SET @increment = 115000
+          END
+
+        BEGIN TRANSACTION;
+
+        UPDATE employee
+        SET salary = salary + @increment
+        WHERE dni = @employee_id
+
+        COMMIT TRANSACTION;
       END
 
-    ELSE IF (@driver_licence = 'C1')
+    ELSE IF (@employee_type = 'PRM')
       BEGIN
-        SET @increment = 95000
-      END
+        SELECT @param_type = (SELECT specialization
+                              FROM paramedic
+                              WHERE dni = @employee_id)
 
-    ELSE IF (@driver_licence LIKE 'D[1-3]')
-      BEGIN
-        SET @increment = 105000
-      END
+        IF (@param_type = 'PAB')
+          BEGIN
+            SET @increment = 300000
+          END
 
-    ELSE IF (@driver_licence = 'E1')
-      BEGIN
-        SET @increment = 115000
-      END
+        ELSE IF (@param_type = 'APA')
+          BEGIN
+            SET @increment = 280000
+          END
 
+        ELSE IF (@param_type = 'AEM')
+          BEGIN
+            SET @increment = 420000
+          END
+
+        ELSE IF (@param_type = 'TEM')
+          BEGIN
+            SET @increment = 490000
+          END
+
+        BEGIN TRANSACTION;
+
+        UPDATE employee
+        SET salary = salary + @increment
+        WHERE dni = @employee_id
+
+        COMMIT TRANSACTION;
+      END
+  END TRY
+  BEGIN CATCH
+    ROLLBACK TRANSACTION;
+  END CATCH
+
+CREATE PROCEDURE update_dispatch_status
+    @object         VARCHAR(7),
+    @id_ambulance   INT,
+    @id_params_team INT,
+    @id_emergency   INT
+AS
+    BEGIN TRY
+      BEGIN TRANSACTION;
+      ​
+      IF (@object = 'en_ruta')
+        BEGIN
+          UPDATE dispatch
+          SET status = 1
+          WHERE id_ambulance = @id_ambulance AND
+                id_params_team = @id_params_team AND
+                id_emergency = @id_emergency
+        END
+          ​
+      ELSE IF (@object = 'en_sitio')
+        BEGIN
+          UPDATE dispatch
+          SET status = 2
+          WHERE id_ambulance = @id_ambulance AND
+                id_params_team = @id_params_team AND
+                id_emergency = @id_emergency
+        END
+          ​
+      ELSE IF (@object = 'de_vuelta')
+        BEGIN
+          UPDATE dispatch
+          SET status = 3
+          WHERE id_ambulance = @id_ambulance AND
+                id_params_team = @id_params_team AND
+                id_emergency = @id_emergency
+        END
+          ​
+      ELSE IF (@object = 'completado')
+        BEGIN
+          UPDATE dispatch
+          SET status = 4
+          WHERE id_ambulance = @id_ambulance AND
+                id_params_team = @id_params_team AND
+                id_emergency = @id_emergency
+        END
+          ​
+      ELSE IF (@object = 'cancelado')
+        BEGIN
+          UPDATE dispatch
+          SET status = 5
+          WHERE id_ambulance = @id_ambulance AND
+                id_params_team = @id_params_team AND
+                id_emergency = @id_emergency
+        END
+          ​
+      COMMIT TRANSACTION;
+  END TRY
+  BEGIN CATCH
+    ROLLBACK TRANSACTION;
+    PRINT ERROR_MESSAGE() + ERROR_NUMBER()
+  END CATCH
+
+
+CREATE PROCEDURE calc_ambulance_distance
+    @beginDate               DATETIME,
+    @lastDate                DATETIME,
+    @id_ambulance            INT,
+    @total_traveled_distance INT OUTPUT
+AS
+  DECLARE
+    @aux INT,
+    @date DATETIME,
+    @current_distance INT
+
+  BEGIN TRY
     BEGIN TRANSACTION;
+    IF (Exists(SELECT id_ambulance
+               FROM dispatch
+               WHERE (@id_ambulance = id_ambulance)))
+      BEGIN
 
-    UPDATE employee
-    SET salary = salary + @increment
-    WHERE dni = @employee_id
+        SELECT @total_traveled_distance = 0
+
+        DECLARE CDistance SCROLL CURSOR FOR
+          SELECT distance
+          FROM dispatch
+          WHERE (id_ambulance = @id_ambulance AND DATEPART(MM, dispatch_hour) >= DATEPART(MM, @beginDate) AND
+                 DATEPART(MM, dispatch_hour) <= DATEPART(MM, @lastDate) AND
+                 DATEPART(YYYY, dispatch_hour) >= DATEPART(YYYY, @beginDate) AND
+                 DATEPART(YYYY, dispatch_hour) <= DATEPART(YYYY, @lastDate))
+
+        OPEN CDistance
+        FETCH NEXT FROM CDistance
+        INTO @current_distance
+        WHILE (@@FETCH_STATUS = 0)
+          BEGIN
+            SELECT @current_distance
+
+            SET @total_traveled_distance = @total_traveled_distance + @current_distance
+            FETCH NEXT FROM CDistance
+            INTO @current_distance
+          END
+        CLOSE CDistance
+        DEALLOCATE CDistance
+      END
 
     COMMIT TRANSACTION;
-  END
-
-ELSE IF (@employee_type = 'PRM')
-  BEGIN
-    SELECT @param_type = (SELECT specialization
-                          FROM paramedic
-                          WHERE dni = @employee_id)
-
-    IF (@param_type = 'PAB')
-      BEGIN
-        SET @increment = 300000
-      END
-
-    ELSE IF (@param_type = 'APA')
-      BEGIN
-        SET @increment = 280000
-      END
-
-    ELSE IF (@param_type = 'AEM')
-      BEGIN
-        SET @increment = 420000
-      END
-
-    ELSE IF (@param_type = 'TEM')
-      BEGIN
-        SET @increment = 490000
-      END
-
-    BEGIN TRANSACTION;
-
-    UPDATE employee
-    SET salary = salary + @increment
-    WHERE dni = @employee_id
-
-    COMMIT TRANSACTION;
-  END
-END TRY
-BEGIN CATCH
-  ROLLBACK TRANSACTION;
-END CATCH
+    RETURN
+  END TRY
+  BEGIN CATCH
+    ROLLBACK TRANSACTION;
+    PRINT ERROR_MESSAGE() + ERROR_NUMBER()
+  END CATCH

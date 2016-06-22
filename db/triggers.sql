@@ -1,7 +1,7 @@
 -- All this sql code was required by our awesome professor,
 -- they are almost useless and have poor code quality, but for
 -- this professor crappy code means 'complex', so yeah just ignore them
-ALTER TRIGGER update_params_team_operation_fee
+CREATE TRIGGER update_params_team_operation_fee
 ON paramedic
 AFTER INSERT
 AS
@@ -35,6 +35,7 @@ COMMIT TRANSACTION;
 END TRY
 BEGIN CATCH
   ROLLBACK TRANSACTION;
+  RAISERROR('An error occurred', 16, 1)
 END CATCH
 
 
@@ -111,6 +112,7 @@ ELSE IF EXISTS(SELECT *
 END TRY
 BEGIN CATCH
   ROLLBACK TRANSACTION;
+  RAISERROR('An error occurred', 16, 1)
 END CATCH
 
 
@@ -141,9 +143,11 @@ COMMIT TRANSACTION;
 END TRY
 BEGIN CATCH
   ROLLBACK TRANSACTION;
+  RAISERROR('An error occurred', 16, 1)
 END CATCH
 
-ALTER TRIGGER update_params_team_fee_on_param_specialization_change
+
+CREATE TRIGGER update_params_team_fee_on_param_specialization_change
 ON paramedic
 AFTER UPDATE
 AS
@@ -240,4 +244,42 @@ AS
   END TRY
   BEGIN CATCH
     ROLLBACK TRANSACTION;
+    RAISERROR('An error occurred', 16, 1)
+  END CATCH
+​
+
+CREATE TRIGGER change_available_driver_status
+ON ambulance
+AFTER DELETE
+AS
+  Declare @id_driver int
+	BEGIN TRY
+      BEGIN TRANSACTION;
+
+			SET @id_driver = (SELECT driver_id FROM deleted)
+			UPDATE employee
+			SET available = 1
+			WHERE (@id_driver = dni)
+
+		  COMMIT TRANSACTION;
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION;
+		RAISERROR('An error occurred', 16, 1)
+	END CATCH
+
+CREATE TRIGGER execute_salary_pluses_calc_procedure
+ON employee
+AFTER INSERT
+AS
+  DECLARE
+    @id_emp INT
+
+  BEGIN TRY
+
+    SELECT @id_emp = (SELECT dni FROM inserted)
+
+    EXEC calc_employee_salary_pluses @employee_id = @id_emp
+  END TRY
+  BEGIN CATCH
   END CATCH

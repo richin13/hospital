@@ -64,7 +64,7 @@ class Paramedic(Employee):
 
     dni = db.Column(db.Integer, db.ForeignKey('employee.dni'), primary_key=True)
     specialization = db.Column(db.CHAR(3), nullable=False, default='UNK')
-    team_id = db.Column(db.Integer, db.ForeignKey('paramedics_team.id_params_team'))
+    id_params_team = db.Column(db.Integer, db.ForeignKey('paramedics_team.id_params_team'))
 
     __mapper_args__ = {
         'polymorphic_identity': 'PRM'

@@ -27,13 +27,13 @@ class Canton(db.Model):
 
     id = db.Column('id_canton', db.Integer, primary_key=True)
     name = db.Column(db.String(60), nullable=False)
-    province_id = db.Column(db.Integer, db.ForeignKey('province.id_province'), nullable=False)
+    id_province = db.Column(db.Integer, db.ForeignKey('province.id_province'), nullable=False)
 
     emergency = db.relationship('Emergency', uselist=False)
 
     def __init__(self, name, province):
         self.name = name
-        self.province_id = province
+        self.id_province = province
 
     def __repr__(self):
         return '%s, %s' % (self.name, self.province.name)

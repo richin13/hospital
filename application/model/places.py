@@ -29,7 +29,7 @@ class Canton(db.Model):
     name = db.Column(db.String(60), nullable=False)
     id_province = db.Column(db.Integer, db.ForeignKey('province.id_province'), nullable=False)
 
-    emergency = db.relationship('Emergency', uselist=False)
+    emergencies = db.relationship('Emergency', back_populates='canton')
 
     def __init__(self, name, province):
         self.name = name

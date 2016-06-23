@@ -33,8 +33,8 @@ class DispatchForm(Form):
     emergency = FormField(AddEmergencyForm)
     ambulance = SelectField('Ambulancia', coerce=int)
     team = SelectField('Equipo', coerce=int)
-    dispatch_hour = DateTimeField('Hora de salida', format='%d-%m-%Y %H:%M')
-    arrival_hour = DateTimeField('Hora de entrada', format='%d-%m-%Y %H:%M', validators=[Optional()])
+    dispatch_hour = DateTimeField('Hora de salida (d-m-a H:M)', format='%d-%m-%Y %H:%M')
+    arrival_hour = DateTimeField('Hora de entrada (d-m-a H:M)', format='%d-%m-%Y %H:%M', validators=[Optional()])
     distance = IntegerField('Distancia')
     status = SelectField('Estado',
                          choices=[('1', 'En ruta'), ('2', 'En sitio'), ('3', 'Volviendo'), ('4', 'Completado'),
@@ -43,6 +43,8 @@ class DispatchForm(Form):
 
 
 class AddDriverForm(AddEmployeeForm):
+    license_type = SelectField('Tipo de licencia', choices=[('B1', 'B-1'), ('B2', 'B-2'), ('B3', 'B-3'), ('C2', 'C-2'),
+                                                            ('D1', 'D-1'), ('D2', 'D-2'), ('D3', 'D-3'), ('E1', 'E-1')])
     start_hour = DateTimeField('Hora de entrada (HH:MM)', format='%H:%M')
     end_hour = DateTimeField('Hora de salida (HH:MM)', format='%H:%M')
 

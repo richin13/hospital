@@ -47,6 +47,7 @@ class Driver(Employee):
     __tablename__ = 'driver'
 
     dni = db.Column(db.Integer, db.ForeignKey('employee.dni'), primary_key=True)
+    license_type = db.Column(db.String(2))
     start_hour = db.Column(db.Time)
     end_hour = db.Column(db.Time)
 
@@ -56,8 +57,9 @@ class Driver(Employee):
         'polymorphic_identity': 'DRV'
     }
 
-    def __init__(self, dni, name, ln, addr, pn, salary, available, _type, sh, eh):
+    def __init__(self, dni, name, ln, addr, pn, salary, available, _type, license_type, sh, eh):
         super(Driver, self).__init__(dni, name, ln, addr, pn, salary, available, _type)
+        self.license_type = license_type
         self.start_hour = sh
         self.end_hour = eh
 

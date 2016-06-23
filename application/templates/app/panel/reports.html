@@ -38,7 +38,7 @@
                 <div class="card">
                     <div class="ui card">
                         <div class="content">
-                            <div class="header">Mas Ingresos Generado</div>
+                            <div class="header">Mas Ingresos Generados</div>
                         </div>
                         <div class="content">
                             <p><strong>Placa: </strong> {{ most_profitable_amb[0].plate_number }} </p>
@@ -97,6 +97,50 @@
                 </div>
             </div>
         </section>
+
+        <h2 class="ui header panel-header spaced">Top Ambulancias & Equipos</h2>
+        <div class="ui horizontal segments">
+            <div class="ui segment">
+                <table class="ui single line table">
+                    <thead>
+                    <tr>
+                        <th>Ambulancia <small>(Placa)</small></th>
+                        <th>Despachos</th>
+                        <th>Ingresos</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for plate_number, dispatchs, profits in top_ambulances %}
+                        <tr>
+                            <td>{{ plate_number }}</td>
+                            <td>{{ dispatchs }}</td>
+                            <td>&cent;{{ profits }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="ui segment">
+                <table class="ui single line table">
+                    <thead>
+                    <tr>
+                        <th>Equipo</th>
+                        <th>Tipo</th>
+                        <th>Ingresos</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for team_id, type, profits in top_teams %}
+                        <tr>
+                            <td>{{ team_id }}</td>
+                            <td>{{ type }}</td>
+                            <td>&cent;{{ profits }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

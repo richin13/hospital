@@ -56,8 +56,8 @@
                         </div>
                     </div>
                     <div class="field">
-                        {{ form.license_type.label }}
-                        {{ form.license_type(class_='ui dropdown') }}
+                        {{ form.licence_type.label }}
+                        {{ form.licence_type(class_='ui dropdown') }}
                     </div>
                     <input type="submit" value="Guardar" class="ui red button">
                 </form>
@@ -102,7 +102,7 @@
                                     <div class="ui bulleted list">
                                         <div class="item"><b>Nombre: </b>{{ d.name }}</div>
                                         <div class="item"><b>Apellido: </b>{{ d.last_name }}</div>
-                                        <div class="item"><b>Licencia: </b>{{ d.license_type }}</div>
+                                        <div class="item"><b>Licencia: </b>{{ d.licence_type }}</div>
                                         <div class="item"><b>Entrada: </b>{{ d.start_hour }}</div>
                                         <div class="item"><b>Salida: </b>{{ d.end_hour }}</div>
                                         <div class="item"><b>Salario: </b>₡{{ d.salary }}</div>

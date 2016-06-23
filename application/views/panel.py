@@ -6,7 +6,7 @@ from application import db
 from application.forms.panel_forms import AddAmbulanceForm, AddDriverForm, AddParamedicForm, AddTeamForm, \
     DispatchForm
 from application.model.operational import Ambulance, Emergency, Dispatch
-from application.model.workforce import Driver, Paramedic, ParamedicTeam
+from application.model.workforce import Driver, Paramedic, ParamedicTeam, Employee
 from application.model.places import Province, Canton
 from sqlalchemy import desc
 
@@ -72,7 +72,7 @@ def dispatch():
 def ambulances():
     form = AddAmbulanceForm()
 
-    form.driver.choices = [(d.dni, str(d)) for d in Driver.query.order_by('name')]
+    form.driver.choices = [(d.dni, str(d)) for d in Employee.query.filter_by(available=True, type="DRV").order_by('name')]
 
     if form.validate_on_submit():
         ambulance = Ambulance(form.license_plate.data, form.brand.data, form.model.data, form.mileage.data,
@@ -136,7 +136,7 @@ def drivers():
 
     if form.validate_on_submit():
         d = Driver(form.dni.data, form.name.data, form.last_name.data, form.address.data, form.phone_number.data,
-                   form.salary.data, True, 'DRV', form.license_type.data, form.start_hour.data, form.end_hour.data)
+                   form.salary.data, True, 'DRV', form.licence_type.data, form.start_hour.data, form.end_hour.data)
         db.session.add(d)
         db.session.commit()
         flask.flash('Conductor agregado correctamente', 'info')
@@ -159,13 +159,18 @@ def reports():
     most_dispatched_param_team = report.most_dispatched_paramedic_team()
     most_profitable_param_team = report.most_profitable_paramedic_team()
 
+    top_ambulances = report.top_ambulances()
+    top_teams = report.top_teams()
+
     return flask.render_template('app/panel/reports.html', title='Panel/Reportes', current_page='reports',
                                  top_km_amb=top_km_amb,
                                  most_dispatched_amb=most_dispatched_ambulance,
                                  most_profitable_amb=most_profitable_ambulance,
                                  most_expensive_team=top_cost_param_team,
                                  most_dispatched_team=most_dispatched_param_team,
-                                 most_profitable_team=most_profitable_param_team)
+                                 most_profitable_team=most_profitable_param_team,
+                                 top_ambulances=top_ambulances,
+                                 top_teams=top_teams)
 
 
 def __complete(dispatch_emergency):

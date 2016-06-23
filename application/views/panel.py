@@ -5,7 +5,7 @@ from application import db
 from application.forms.panel_forms import AddAmbulanceForm, AddDriverForm, AddParamedicForm, AddTeamForm, \
     DispatchForm
 from application.model.operational import Ambulance, Emergency, Dispatch
-from application.model.workforce import Driver, Paramedic, ParamedicTeam
+from application.model.workforce import Driver, Paramedic, ParamedicTeam, Employee
 from application.model.places import Province, Canton
 from sqlalchemy import desc
 
@@ -71,7 +71,7 @@ def dispatch():
 def ambulances():
     form = AddAmbulanceForm()
 
-    form.driver.choices = [(d.dni, str(d)) for d in Driver.query.order_by('name')]
+    form.driver.choices = [(d.dni, str(d)) for d in Employee.query.filter_by(available=True, type="DRV").order_by('name')]
 
     if form.validate_on_submit():
         ambulance = Ambulance(form.license_plate.data, form.brand.data, form.model.data, form.mileage.data,

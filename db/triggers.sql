@@ -315,3 +315,29 @@ AS
   END TRY
   BEGIN CATCH
   END CATCH
+
+CREATE TRIGGER move_insurance_plan_to_historic_on_delete
+ON insurance_plan
+INSTEAD OF DELETE
+AS
+  DECLARE
+    @id_insurance_plan INT,
+	  @description VARCHAR(100)
+
+  BEGIN TRY
+    SELECT @id_insurance_plan = (SELECT id_insurance_plan FROM deleted)
+​
+
+	SELECT @description = (SELECT description FROM deleted)
+​
+    BEGIN TRANSACTION;
+​
+    INSERT INTO historic_insurance_plan (id_insurance_plan, date, description)
+    VALUES (@id_insurance_plan, GETDATE(), @description )
+​
+    COMMIT TRANSACTION;
+​
+  END TRY
+  BEGIN CATCH
+    ROLLBACK TRANSACTION;
+  END CATCH

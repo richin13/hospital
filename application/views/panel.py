@@ -134,7 +134,7 @@ def drivers():
 
     if form.validate_on_submit():
         d = Driver(form.dni.data, form.name.data, form.last_name.data, form.address.data, form.phone_number.data,
-                   form.salary.data, True, 'DRV', form.start_hour.data, form.end_hour.data)
+                   form.salary.data, True, 'DRV', form.license_type.data, form.start_hour.data, form.end_hour.data)
         db.session.add(d)
         db.session.commit()
         flask.flash('Conductor agregado correctamente', 'info')

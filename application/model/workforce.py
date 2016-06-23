@@ -47,7 +47,7 @@ class Driver(Employee):
     __tablename__ = 'driver'
 
     dni = db.Column(db.Integer, db.ForeignKey('employee.dni'), primary_key=True)
-    license_type = db.Column(db.String(2))
+    licence_type = db.Column(db.String(2))
     start_hour = db.Column(db.Time)
     end_hour = db.Column(db.Time)
 

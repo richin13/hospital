@@ -43,7 +43,7 @@ class DispatchForm(Form):
 
 
 class AddDriverForm(AddEmployeeForm):
-    license_type = SelectField('Tipo de licencia', choices=[('B1', 'B-1'), ('B2', 'B-2'), ('B3', 'B-3'), ('C2', 'C-2'),
+    licence_type = SelectField('Tipo de licencia', choices=[('B1', 'B-1'), ('B2', 'B-2'), ('B3', 'B-3'), ('C2', 'C-2'),
                                                             ('D1', 'D-1'), ('D2', 'D-2'), ('D3', 'D-3'), ('E1', 'E-1')])
     start_hour = DateTimeField('Hora de entrada (HH:MM)', format='%H:%M')
     end_hour = DateTimeField('Hora de salida (HH:MM)', format='%H:%M')

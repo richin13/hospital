@@ -53,10 +53,10 @@ DECLARE
 BEGIN TRY
 
 IF EXISTS(SELECT *
-          FROM inserted)
+          FROM deleted)
   BEGIN
     IF EXISTS(SELECT *
-              FROM deleted)
+              FROM inserted)
       BEGIN
         IF ((SELECT status
              FROM inserted) = 4)
@@ -250,18 +250,34 @@ AS
 
 CREATE TRIGGER change_available_driver_status
 ON ambulance
-AFTER DELETE
+AFTER INSERT, DELETE
 AS
   Declare @id_driver int
 	BEGIN TRY
-      BEGIN TRANSACTION;
+      IF EXISTS (SELECT * FROM inserted)
+          BEGIN
+            BEGIN TRANSACTION;
 
-			SET @id_driver = (SELECT driver_id FROM deleted)
-			UPDATE employee
-			SET available = 1
-			WHERE (@id_driver = dni)
+            SET @id_driver = (SELECT driver_id FROM deleted)
+            UPDATE employee
+            SET available = 0
+            WHERE (@id_driver = dni)
 
-		  COMMIT TRANSACTION;
+		        COMMIT TRANSACTION;
+          END
+
+      ELSE IF EXISTS (SELECT * FROM deleted)
+          BEGIN
+            BEGIN TRANSACTION;
+
+            SET @id_driver = (SELECT driver_id FROM deleted)
+            UPDATE employee
+            SET available = 1
+            WHERE (@id_driver = dni)
+
+		        COMMIT TRANSACTION;
+          END
+
 	END TRY
 	BEGIN CATCH
 		ROLLBACK TRANSACTION;

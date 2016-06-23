@@ -1,8 +1,3 @@
--- All this sql code was required by our awesome professor,
--- they are almost useless and have poor code quality, but for
--- this professor crappy code means 'complex', so yeah just ignore them.
--- We were asked to do 50% of the CRUD operations with stored procedures
--- what the hell?
 
 -- Basic Procedures
 CREATE PROCEDURE calc_ambulance_distance
@@ -41,6 +36,7 @@ AS
             SELECT @current_distance
 
             SET @total_traveled_distance = @total_traveled_distance + @current_distance
+            print @total_traveled_distance
             FETCH NEXT FROM CDistance
             INTO @current_distance
           END

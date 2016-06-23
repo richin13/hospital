@@ -1,6 +1,3 @@
--- All this sql code was required by our awesome professor,
--- they are almost useless and have poor code quality, but for
--- this professor crappy code means 'complex', so yeah just ignore them
 
 -- Basic Triggers
 CREATE TRIGGER update_params_team_operation_fee
@@ -243,7 +240,7 @@ ELSE IF EXISTS(SELECT *
         SELECT
             @ambulance_id = id_ambulance,
             @id_params = id_params_team
-        FROM inserted
+        FROM deleted
 
         EXEC update_available_status @object = 'AMB', @object_id = @ambulance_id, @available = 1;
         EXEC update_available_status @object = 'PARAM_T', @object_id = @id_params, @available = 1;

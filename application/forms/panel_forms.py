@@ -33,8 +33,8 @@ class DispatchForm(Form):
     emergency = FormField(AddEmergencyForm)
     ambulance = SelectField('Ambulancia', coerce=int)
     team = SelectField('Equipo', coerce=int)
-    dispatch_hour = DateTimeField('Hora de salida', format='%H:%M')
-    arrival_hour = DateTimeField('Hora de entrada', format='%H:%M', validators=[Optional()])
+    dispatch_hour = DateTimeField('Hora de salida', format='%d-%m-%Y %H:%M')
+    arrival_hour = DateTimeField('Hora de entrada', format='%d-%m-%Y %H:%M', validators=[Optional()])
     distance = IntegerField('Distancia')
     status = SelectField('Estado',
                          choices=[('1', 'En ruta'), ('2', 'En sitio'), ('3', 'Volviendo'), ('4', 'Completado'),

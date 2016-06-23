@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*
 import flask
 import flask_login
 from application import db
@@ -44,5 +45,5 @@ def users():
 
     us = User.query.all()
 
-    return flask.render_template('app/profile/users.html', title='Perfil/Gestión de usuarios', current_page='users',
+    return flask.render_template('app/profile/users.html', title=u'Perfil/Gestión de usuarios', current_page='users',
                                  form=form, users=us)

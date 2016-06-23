@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*
 import flask
 import flask_login
 import application.util.reports as report
@@ -101,12 +102,12 @@ def paramedics():
         param.id_params_team = form.team.data
         db.session.add(param)
         db.session.commit()
-        flask.flash('Paramédico agregado correctamente', 'info')
+        flask.flash(u'Paramédico agregado correctamente', 'info')
         return flask.redirect(flask.url_for('application.panel.paramedics'))
 
     _paramedics = Paramedic.query.all()
 
-    return flask.render_template('app/panel/paramedic.html', title='Panel/Paramédicos', current_page='paramedics',
+    return flask.render_template('app/panel/paramedic.html', title=u'Panel/Paramédicos', current_page='paramedics',
                                  form=form, paramedics=_paramedics)
 
 
@@ -119,6 +120,7 @@ def teams():
         team = ParamedicTeam(form.type.data, True, form.fee.data)
         db.session.add(team)
         db.session.commit()
+        flask.flash('Equipo agregado correctamente', 'info')
         return flask.redirect(flask.url_for('application.panel.teams'))
 
     _teams = ParamedicTeam.query.all()

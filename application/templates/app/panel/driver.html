@@ -89,16 +89,23 @@
                 </div>
                 <div class="separator"></div>
                 <div class="ui items">
-                    {% for a in drivers %}
+                    {% for d in drivers %}
                         <div class="item">
                             <div class="content">
-                                <div class="header">{{ a.name }} {{ a.last_name }}</div>
+                                <div class="header">Conductor #{{ d.dni }}</div>
                                 <div class="description">
-                                    <p></p>
-                                    <p></p>
+                                    Información:
+                                    <div class="ui bulleted list">
+                                        <div class="item"><b>Nombre: </b>{{ d.name }}</div>
+                                        <div class="item"><b>Apellido: </b>{{ d.last_name }}</div>
+                                        <div class="item"><b>Entrada: </b>{{ d.start_hour }}</div>
+                                        <div class="item"><b>Salida: </b>{{ d.end_hour }}</div>
+                                        <div class="item"><b>Salario: </b>₡{{ d.salary }}</div>
+                                        <div class="item"><b>Conduce: </b>{{ d.ambulance | string }}</div>
+                                    </div>
                                 </div>
                                 <div class="extra">
-                                    {% if a.available %}
+                                    {% if d.available %}
                                         <i class="green check icon"></i> Disponible
                                     {% else %}
                                         <i class="red remove icon"></i> No disponible

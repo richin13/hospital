@@ -44,16 +44,24 @@ def dispatch():
     form.team.choices = [(t.id, str(t)) for t in ParamedicTeam.query.order_by('id_params_team')]
 
     if form.validate_on_submit():
-        e = Emergency(form.emergency.description.data, form.emergency.type.data, form.emergency.address.data,
+        e = Emergency(form.emergency.e_description.data, form.emergency.e_type.data, form.emergency.address.data,
                       form.emergency.canton.data)
+        db.session.add(e)
+        db.session.commit()
+
         d = Dispatch(form.ambulance.data, form.team.data, e.id, form.dispatch_hour.data, form.arrival_hour.data,
                      form.distance.data, form.status.data, form.fee.data)
-        db.session.add(e)
         db.session.add(d)
         db.session.commit()
         return flask.redirect(flask.url_for('application.panel.dispatch'))
 
-    return flask.render_template('app/panel/dispatch.html', title='Panel/Despacho', current_page='dispatch', form=form)
+    __complete(flask.request.args.get('complete'))
+    __cancel(flask.request.args.get('cancel'))
+
+    dispatches = Dispatch.query.all()
+
+    return flask.render_template('app/panel/dispatch.html', title='Panel/Despacho', current_page='dispatch', form=form,
+                                 dispatches=dispatches)
 
 
 @mod.route('/ambulances', methods=['GET', 'POST'])
@@ -87,7 +95,7 @@ def paramedics():
 
     if form.validate_on_submit():
         param = Paramedic(form.dni.data, form.name.data, form.last_name.data, form.address.data, form.phone_number.data,
-                          form.salary.data, form.available.data, 'PRM', form.specialization.data)
+                          form.salary.data, True, 'PRM', form.specialization.data)
         param.id_params_team = form.team.data
         db.session.add(param)
         db.session.commit()
@@ -100,13 +108,13 @@ def paramedics():
                                  form=form, paramedics=_paramedics)
 
 
-@mod.route('teams', methods=['GET', 'POST'])
+@mod.route('/teams', methods=['GET', 'POST'])
 @flask_login.login_required
 def teams():
     form = AddTeamForm()
 
     if form.validate_on_submit():
-        team = ParamedicTeam(form.type.data, form.available.data, form.fee.data)
+        team = ParamedicTeam(form.type.data, True, form.fee.data)
         db.session.add(team)
         db.session.commit()
         return flask.redirect(flask.url_for('application.panel.teams'))
@@ -124,7 +132,7 @@ def drivers():
 
     if form.validate_on_submit():
         d = Driver(form.dni.data, form.name.data, form.last_name.data, form.address.data, form.phone_number.data,
-                   form.salary.data, form.available.data, 'DRV', form.start_hour.data, form.end_hour.data)
+                   form.salary.data, True, 'DRV', form.start_hour.data, form.end_hour.data)
         db.session.add(d)
         db.session.commit()
         flask.flash('Conductor agregado correctamente', 'info')
@@ -134,3 +142,21 @@ def drivers():
 
     return flask.render_template('app/panel/driver.html', title='Panel/Conductores', current_page='drivers',
                                  form=form, drivers=_drivers)
+
+
+def __complete(dispatch_emergency):
+    if dispatch_emergency:
+        _dispatch = Dispatch.query.filter_by(id_emergency=dispatch_emergency).first_or_404()
+
+        if _dispatch and _dispatch.status != 4:
+            _dispatch.status = 4
+            db.session.commit()
+
+
+def __cancel(dispatch_emergency):
+    if dispatch_emergency:
+        _dispatch = Dispatch.query.filter_by(id_emergency=dispatch_emergency).first_or_404()
+
+        if _dispatch and _dispatch.status != 5:
+            _dispatch.status = 5
+            db.session.commit()

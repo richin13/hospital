@@ -92,10 +92,15 @@
                     {% for p in paramedics %}
                         <div class="item">
                             <div class="content">
-                                <div class="header">{{ p.name }} {{ p.last_name }}</div>
+                                <div class="header">Paramédico #{{ p.dni }}</div>
                                 <div class="description">
-                                    <p></p>
-                                    <p></p>
+                                    <div class="ui bulleted list">
+                                        <div class="item"><b>Nombre: </b>{{ p.name }}</div>
+                                        <div class="item"><b>Apellido: </b>{{ p.last_name }}</div>
+                                        <div class="item"><b>Especialización: </b>{{ p.specialization }}</div>
+                                        <div class="item"><b>Salario: </b>₡{{ p.salary }}</div>
+                                        <div class="item"><b>Pertenece a </b>{{ p.team | string }}</div>
+                                    </div>
                                 </div>
                                 <div class="extra">
                                     {% if p.available %}

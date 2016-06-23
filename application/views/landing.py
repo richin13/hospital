@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*
 import flask
 
 mod = flask.Blueprint('landing', __name__)

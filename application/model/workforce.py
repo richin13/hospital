@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*
 from application import db
 
 
@@ -114,7 +115,7 @@ class ParamedicTeam(db.Model):
 
     def _pretty_type(self):
         if self.type == 'SB':
-            return 'Soporte Básico'
+            return u'Soporte Básico'
         elif self.type == 'SA':
             return 'Soporte Avanzado'
         else:

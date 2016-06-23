@@ -268,8 +268,24 @@ AS
 		RAISERROR('An error occurred', 16, 1)
 	END CATCH
 
-CREATE TRIGGER execute_salary_pluses_calc_procedure
-ON employee
+CREATE TRIGGER execute_driver_salary_pluses_calc_procedure
+ON driver
+AFTER INSERT
+AS
+  DECLARE
+    @id_emp INT
+
+  BEGIN TRY
+
+    SELECT @id_emp = (SELECT dni FROM inserted)
+
+    EXEC calc_employee_salary_pluses @employee_id = @id_emp
+  END TRY
+  BEGIN CATCH
+  END CATCH
+
+CREATE TRIGGER execute_paramedic_salary_pluses_calc_procedure
+ON paramedic
 AFTER INSERT
 AS
   DECLARE

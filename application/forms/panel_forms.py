@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*
 from flask_wtf import Form
 from wtforms import StringField, TextAreaField, IntegerField, BooleanField, FloatField, DateTimeField, SelectField, \
     FormField
@@ -5,27 +6,27 @@ from wtforms.validators import DataRequired, NumberRange, length, Optional
 
 
 class AddEmployeeForm(Form):
-    dni = IntegerField('Cédula', validators=[DataRequired('Debe especificar el número de cedula')],
-                       render_kw={'placeholder': 'Cédula'})
+    dni = IntegerField(u'Cédula', validators=[DataRequired(u'Debe especificar el número de cedula')],
+                       render_kw={'placeholder': u'Cédula'})
     name = StringField('Nombre', validators=[DataRequired('Debe especificar el nombre')],
                        render_kw={'placeholder': 'Nombre'})
     last_name = StringField('Apellido', validators=[DataRequired('Debe especificar el apellido')],
                             render_kw={'placeholder': 'Apellido'})
-    address = TextAreaField('Dirección', validators=[length(max=128)],
-                            render_kw={'placeholder': 'Dirección'})
-    phone_number = StringField('Teléfono', validators=[length(max=10)],
-                               render_kw={'placeholder': 'Teléfono'})
+    address = TextAreaField(u'Dirección', validators=[length(max=128)],
+                            render_kw={'placeholder': u'Dirección'})
+    phone_number = StringField(u'Teléfono', validators=[length(max=10)],
+                               render_kw={'placeholder': u'Teléfono'})
     salary = FloatField('Salario', validators=[DataRequired('Debe especificar el salario'), NumberRange(min=0)],
                         render_kw={'placeholder': 'Salario'})
     available = BooleanField('Disponible')
 
 
 class AddEmergencyForm(Form):
-    e_description = TextAreaField('Descripción')
+    e_description = TextAreaField(u'Descripción')
     e_type = StringField('Tipo')
-    address = TextAreaField('Dirección')
+    address = TextAreaField(u'Dirección')
     province = SelectField('Provincia', coerce=int)
-    canton = SelectField('Cantón', coerce=int)
+    canton = SelectField(u'Cantón', coerce=int)
     pass
 
 
@@ -50,28 +51,28 @@ class AddDriverForm(AddEmployeeForm):
 
 
 class AddParamedicForm(AddEmployeeForm):
-    specialization = SelectField('Especilización',
+    specialization = SelectField(u'Especilización',
                                  choices=[('PAB', 'PAB'), ('APA', 'APA'), ('AEM', 'AEM'), ('TEM', 'TEM')])
     team = SelectField('Equipo', coerce=int)
 
 
 class AddTeamForm(Form):
-    type = SelectField('Tipo', choices=[('SB', 'Soporte Básico'), ('SA', 'Soporte Avanzado'), ('SV', 'Soporte Vital')])
+    type = SelectField('Tipo', choices=[('SB', u'Soporte Básico'), ('SA', 'Soporte Avanzado'), ('SV', 'Soporte Vital')])
     available = BooleanField('Equipo disponible?')
     fee = FloatField('Cargos', validators=[])
 
 
 class AddAmbulanceForm(Form):
-    license_plate = IntegerField('Número de placa',
-                                 validators=[DataRequired(message='Debe especificar el número de placa')],
-                                 render_kw={'placeholder': 'Número de placa'})
+    license_plate = IntegerField(u'Número de placa',
+                                 validators=[DataRequired(message=u'Debe especificar el número de placa')],
+                                 render_kw={'placeholder': u'Número de placa'})
     brand = StringField('Marca',
-                        validators=[DataRequired(message='Debe especificar la marca del vehículo'),
-                                    length(max=45, message='Marca inválida')],
+                        validators=[DataRequired(message=u'Debe especificar la marca del vehículo'),
+                                    length(max=45, message=u'Marca inválida')],
                         render_kw={'placeholder': 'Marca'})
     model = StringField('Modelo',
-                        validators=[DataRequired(message='Debe especificar el modelo del vehículo'),
-                                    length(max=45, message='Modelo inválido')],
+                        validators=[DataRequired(message=u'Debe especificar el modelo del vehículo'),
+                                    length(max=45, message=u'Modelo inválido')],
                         render_kw={'placeholder': 'Modelo'})
     mileage = IntegerField('Kilometraje',
                            validators=[NumberRange(min=0, message='El kilometraje debe ser positivo o 0')],

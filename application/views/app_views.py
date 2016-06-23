@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*
 import flask
 import flask_login
 from sqlalchemy import or_

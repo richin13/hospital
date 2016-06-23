@@ -78,10 +78,15 @@
                     {% for a in ambulances %}
                         <div class="item">
                             <div class="content">
-                                <div class="header">{{ a.brand }}, {{ a.plate_number }}</div>
+                                <div class="header">Ambulancia #{{ a.id }}</div>
                                 <div class="description">
-                                    <p></p>
-                                    <p></p>
+                                    <div class="ui bulleted list">
+                                        <div class="item"><b>Placa: </b>{{ a.plate_number }}</div>
+                                        <div class="item"><b>Marca: </b>{{ a.brand }}</div>
+                                        <div class="item"><b>Modelo: </b>{{ a.model }}</div>
+                                        <div class="item"><b>Kilometraje: </b>{{ a.mileage }} km</div>
+                                        <div class="item"><b>Conductor: </b>{{ a.driver }}</div>
+                                    </div>
                                 </div>
                                 <div class="extra">
                                     {% if a.available %}

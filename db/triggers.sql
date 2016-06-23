@@ -53,10 +53,10 @@ DECLARE
 BEGIN TRY
 
 IF EXISTS(SELECT *
-          FROM inserted)
+          FROM deleted)
   BEGIN
     IF EXISTS(SELECT *
-              FROM deleted)
+              FROM inserted)
       BEGIN
         IF ((SELECT status
              FROM inserted) = 4)
@@ -250,26 +250,58 @@ AS
 
 CREATE TRIGGER change_available_driver_status
 ON ambulance
-AFTER DELETE
+AFTER INSERT, DELETE
 AS
   Declare @id_driver int
 	BEGIN TRY
-      BEGIN TRANSACTION;
+      IF EXISTS (SELECT * FROM inserted)
+          BEGIN
+            BEGIN TRANSACTION;
 
-			SET @id_driver = (SELECT driver_id FROM deleted)
-			UPDATE employee
-			SET available = 1
-			WHERE (@id_driver = dni)
+            SET @id_driver = (SELECT driver_id FROM deleted)
+            UPDATE employee
+            SET available = 0
+            WHERE (@id_driver = dni)
 
-		  COMMIT TRANSACTION;
+		        COMMIT TRANSACTION;
+          END
+
+      ELSE IF EXISTS (SELECT * FROM deleted)
+          BEGIN
+            BEGIN TRANSACTION;
+
+            SET @id_driver = (SELECT driver_id FROM deleted)
+            UPDATE employee
+            SET available = 1
+            WHERE (@id_driver = dni)
+
+		        COMMIT TRANSACTION;
+          END
+
 	END TRY
 	BEGIN CATCH
 		ROLLBACK TRANSACTION;
 		RAISERROR('An error occurred', 16, 1)
 	END CATCH
 
-CREATE TRIGGER execute_salary_pluses_calc_procedure
-ON employee
+CREATE TRIGGER execute_driver_salary_pluses_calc_procedure
+ON driver
+AFTER INSERT
+AS
+  DECLARE
+    @id_emp INT
+
+  BEGIN TRY
+
+    SELECT @id_emp = (SELECT dni FROM inserted)
+
+    EXEC calc_employee_salary_pluses @employee_id = @id_emp
+  END TRY
+  BEGIN CATCH
+  END CATCH
+
+CREATE TRIGGER execute_paramedic_salary_pluses_calc_procedure
+ON paramedic
 AFTER INSERT
 AS
   DECLARE

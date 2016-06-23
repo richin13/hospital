@@ -57,7 +57,7 @@
                         </div>
                     </div>
                     <div class="statistic">
-                        <div class="value">{{ teams | available_assets}}</div>
+                        <div class="value">{{ teams | available_assets }}</div>
                         <div class="label">Disponibles</div>
                     </div>
                 </div>
@@ -66,10 +66,16 @@
                     {% for t in teams %}
                         <div class="item">
                             <div class="content">
-                                <div class="header">{{ t.type }}, {{ t.operation_fee }}</div>
+                                <div class="header">{{ t._pretty_type() }}, ₡{{ t.operation_fee }}</div>
                                 <div class="description">
-                                    <p></p>
-                                    <p></p>
+                                    Integrantes:
+                                    <div class="ui list">
+                                        <div class="item">
+                                            {% for m in t.members %}
+                                                <p><i class="user icon"></i> {{ m | string }}, {{ m.specialization }}</p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="extra">
                                     {% if t.available %}

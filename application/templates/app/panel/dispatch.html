@@ -19,10 +19,11 @@
                 <h2 class="ui header panel-header">Despachar</h2>
                 <form method="POST" class="ui form">
                     {{ form.hidden_tag() }}
+                    {{ form.emergency.hidden_tag() }}
                     <h3 class="ui header">Detalles de la emergencia</h3>
                     <div class="field">
-                        {{ form.emergency.description.label }}
-                        {{ form.emergency.description }}
+                        {{ form.emergency.e_description.label }}
+                        {{ form.emergency.e_description }}
                     </div>
                     <div class="field">
                         {{ form.emergency.address.label }}
@@ -84,6 +85,76 @@
                         </ul>
                     </div>
                 {% endif %}
+            </div>
+            <div class="ui vertical segment">
+                <h2 class="ui header panel-header">Listado de despachos</h2>
+                <div class="ui statistics">
+                    <div class="statistic">
+                        <div class="value">
+                            <i class="ambulance icon"></i> {{ dispatches | length }}
+                        </div>
+                        <div class="label">
+                            Despachos
+                        </div>
+                    </div>
+                    <div class="statistic">
+                        <div class="value">{{ dispatches | completed }}</div>
+                        <div class="label">Completados</div>
+                    </div>
+                </div>
+                <div class="separator"></div>
+                <div class="ui divided items">
+                    {% for d in dispatches %}
+                        <div class="item">
+                            <div class="content">
+                                <div class="header">Despacho #{{ d.id_emergency }}</div>
+                                <div class="description">
+                                    <div class="ui list">
+                                        <div class="item">Se atiende {{ d.emergency.description }}
+                                            en {{ d.emergency.address }}, {{ d.emergency.canton | string }}</div>
+                                        <div class="item"><b>Hora de salida: </b>{{ d.dispatch_hour.strftime('%H:%M') }}
+                                        </div>
+                                        {% if d.arrival_hour %}
+                                            <div class="item"><b>Hora
+                                                llegada: </b>{{ d.arrival_hour.strftime('%H:%M') }}</div>
+                                        {% endif %}
+                                        {% if d.distance == None %}
+                                            <div class="item"><b>Distancia desconocida</b></div>
+                                        {% else %}
+                                            <div class="item"><b>Distancia: </b>A unos {{ d.distance }}km
+                                                aproximadamente
+                                            </div>
+                                        {% endif %}
+                                        <div class="item"><b>Estado: </b>{{ d.pretty_status() }}</div>
+                                        <div class="item"><b>Costo aproximado: </b>₡{{ d.fee }}</div>
+                                        <div class="item"><b>Atiende: </b>Unidad #{{ d.ambulance.plate_number }}</div>
+                                    </div>
+                                </div>
+                                <div class="extra">
+                                    {% if d.status not in [4, 5] %}
+                                        <a class="ui animated fade right floated blue button"
+                                           href="{{ url_for('application.panel.dispatch') }}?complete={{ d.id_emergency }}"
+                                           title="Marcar como completado" tabindex="0">
+                                            <div class="visible content">Completar</div>
+                                            <div class="hidden content">
+                                                <i class="wizard icon"></i>
+                                            </div>
+                                        </a>
+
+                                        <a href="{{ url_for('application.panel.dispatch') }}?cancel={{ d.id_emergency }}"
+                                           class="ui animated fade right floated red button" title="Cancelar"
+                                           tabindex="0">
+                                            <div class="visible content">Cancelar</div>
+                                            <div class="hidden content">
+                                                <i class="ban icon"></i>
+                                            </div>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>

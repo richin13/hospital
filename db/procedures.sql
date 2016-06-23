@@ -111,21 +111,21 @@ AS
     BEGIN
       UPDATE employee
       SET available = @available
-      WHERE employee.dni = @object_id AND employee.available != @available
+      WHERE employee.dni = @object_id
     END
 
   ELSE IF (@object = 'PARAM_T')
     BEGIN
       UPDATE paramedics_team
       SET available = @available
-      WHERE paramedics_team.id_params_team = @object_id AND available != @available
+      WHERE paramedics_team.id_params_team = @object_id
     END
 
   ELSE IF (@object = 'AMB')
     BEGIN
       UPDATE ambulance
       SET available = @available
-      WHERE ambulance.id_ambulance = @object_id AND available != @available
+      WHERE ambulance.id_ambulance = @object_id
     END
 
   COMMIT TRANSACTION;
@@ -162,7 +162,7 @@ AS
             SET @increment = 80000
           END
 
-        ELSE IF (@driver_licence = 'C1')
+        ELSE IF (@driver_licence = 'C2')
           BEGIN
             SET @increment = 95000
           END

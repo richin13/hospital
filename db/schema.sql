@@ -75,9 +75,9 @@ CREATE TABLE driver (
   CONSTRAINT ck_licence_type CHECK (
     licence_type LIKE 'A[1-3]' OR
     licence_type LIKE 'B[1-3]' OR
-    licence_type LIKE 'C[2]' OR
+    licence_type = 'C2' OR
     licence_type LIKE 'D[1-3]' OR
-    licence_type LIKE 'E[1]'
+    licence_type = 'E1'
   )
 );
 
@@ -114,7 +114,7 @@ CREATE TABLE paramedic (
 );
 
 CREATE TABLE ambulance (
-  id_ambulance INT         NOT NULL PRIMARY KEY,
+  id_ambulance INT         NOT NULL PRIMARY KEY IDENTITY,
   plate_number INT         NOT NULL UNIQUE,
   brand        VARCHAR(45) NOT NULL,
   model        VARCHAR(45) NOT NULL,

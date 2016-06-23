@@ -47,17 +47,19 @@ class Driver(Employee):
     __tablename__ = 'driver'
 
     dni = db.Column(db.Integer, db.ForeignKey('employee.dni'), primary_key=True)
+    licence_type = db.Column(db.String(2))
     start_hour = db.Column(db.Time)
     end_hour = db.Column(db.Time)
 
-    ambulance = db.relationship('Ambulance', backref='driver', uselist=False)
+    ambulance = db.relationship('Ambulance', back_populates='driver', uselist=False)
 
     __mapper_args__ = {
         'polymorphic_identity': 'DRV'
     }
 
-    def __init__(self, dni, name, ln, addr, pn, salary, available, _type, sh, eh):
+    def __init__(self, dni, name, ln, addr, pn, salary, available, _type, license_type, sh, eh):
         super(Driver, self).__init__(dni, name, ln, addr, pn, salary, available, _type)
+        self.license_type = license_type
         self.start_hour = sh
         self.end_hour = eh
 
@@ -68,6 +70,7 @@ class Paramedic(Employee):
     dni = db.Column(db.Integer, db.ForeignKey('employee.dni'), primary_key=True)
     specialization = db.Column(db.CHAR(3), nullable=False, default='UNK')
     id_params_team = db.Column(db.Integer, db.ForeignKey('paramedics_team.id_params_team'))
+    team = db.relationship('ParamedicTeam', back_populates='members')
 
     __mapper_args__ = {
         'polymorphic_identity': 'PRM'
@@ -94,7 +97,7 @@ class ParamedicTeam(db.Model):
     available = db.Column(db.Boolean, nullable=False)
     operation_fee = db.Column(db.Float, nullable=False)
 
-    members = db.relationship('Paramedic', backref='team')
+    members = db.relationship('Paramedic', back_populates='team')
     dispatches = db.relationship('Dispatch', backref='paramedics_team')
 
     __table_args__ = (
@@ -118,4 +121,4 @@ class ParamedicTeam(db.Model):
             return 'Soporte Vital'
 
     def __repr__(self):
-        return 'Equpo %s: %s' % (self.id, self._pretty_type())
+        return 'Equipo %s: %s' % (self.id, self._pretty_type())

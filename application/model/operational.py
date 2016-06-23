@@ -12,6 +12,8 @@ class Ambulance(db.Model):
     available = db.Column(db.Boolean, nullable=False)
 
     driver_id = db.Column(db.Integer, db.ForeignKey('driver.dni'))
+
+    driver = db.relationship('Driver', back_populates='ambulance')
     dispatches = db.relationship('Dispatch', backref='ambulance')
 
     def __init__(self, plate_number, brand, model, mileage=0, available=True):
@@ -20,6 +22,9 @@ class Ambulance(db.Model):
         self.model = model
         self.mileage = mileage
         self.available = available
+
+    def __repr__(self):
+        return '%s %s, #%s' %(self.brand, self.model, self.plate_number)
 
 
 class Emergency(db.Model):
@@ -31,6 +36,7 @@ class Emergency(db.Model):
     address = db.Column(db.String(128), nullable=False)
     id_canton = db.Column(db.Integer, db.ForeignKey('canton.id_canton'), nullable=False)
 
+    canton = db.relationship('Canton', back_populates='emergencies')
     dispatch = db.relationship('Dispatch', backref='emergency', uselist=False)
     bill = db.relationship('Bill', backref='emergency', uselist=False)
 

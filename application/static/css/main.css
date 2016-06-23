@@ -7,3 +7,7 @@
 .panel-header {
     border-bottom: 2px #db2828 solid !important;
 }
+
+.spaced {
+    padding-bottom: 45px;
+}

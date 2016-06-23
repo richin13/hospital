@@ -1,0 +1,146 @@
+{% extends 'app/panel/layout.html' %}
+{% block panel_content %}
+<div class="ui vertical segment">
+    <div class="ui container">
+        <h1 class="ui header">Reportes Generales</h1>
+
+        <section class="spaced" id="ambulance">
+            <h2 class="ui header panel-header spaced">Ambulancias</h2>
+            <div class="ui cards">
+                <div class="card">
+                    <div class="ui card">
+                        <div class="content">
+                            <div class="header">Mas Kilometraje</div>
+                        </div>
+                        <div class="content">
+                            <p><strong>Placa: </strong> {{ top_km_amb[0].plate_number }} </p>
+                            <p><strong>Kilometraje: </strong> {{ top_km_amb[0].mileage }} Km </p>
+                            <p><strong>Marca: </strong> {{ top_km_amb[0].brand.capitalize() }} </p>
+                            <p><strong>Modelo: </strong> {{ top_km_amb[0].model.capitalize() }} </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="ui card">
+                        <div class="content">
+                            <div class="header">Mas Despachos</div>
+                        </div>
+                        <div class="content">
+                            <p><strong>Placa: </strong> {{ most_dispatched_amb[0].plate_number }} </p>
+                            <p><strong>Despachos: </strong> {{ most_dispatched_amb[1] }} </p>
+                            <p><strong>Marca: </strong> {{ most_dispatched_amb[0].brand.capitalize() }} </p>
+                            <p><strong>Modelo: </strong> {{ most_dispatched_amb[0].model.capitalize() }} </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="ui card">
+                        <div class="content">
+                            <div class="header">Mas Ingresos Generados</div>
+                        </div>
+                        <div class="content">
+                            <p><strong>Placa: </strong> {{ most_profitable_amb[0].plate_number }} </p>
+                            <p><strong>Ingresos: </strong> &cent;{{ most_profitable_amb[1] }} </p>
+                            <p><strong>Marca: </strong> {{ most_profitable_amb[0].brand.capitalize() }} </p>
+                            <p><strong>Modelo: </strong> {{ most_profitable_amb[0].model.capitalize() }} </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="spaced" id="paramedic_team">
+            <h2 class="ui header panel-header spaced">Equipo de Paramedicos</h2>
+            <div class="ui cards">
+                <div class="card">
+                    <div class="ui card">
+                        <div class="content">
+                            <div class="header">Mas Costoso</div>
+                        </div>
+                        <div class="content">
+                            <p><strong>Equipo:</strong> {{ most_expensive_team[0].id }} </p>
+                            <p><strong>Costo: </strong> &cent;{{ most_expensive_team[0].operation_fee }} </p>
+                            <p><strong>Tipo:</strong> {{ most_expensive_team[0].type }} </p>
+                            <p><strong>Miembros:</strong> {{ most_expensive_team[0].members | length }} </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="ui card">
+                        <div class="content">
+                            <div class="header">Mas Despachos</div>
+                        </div>
+                        <div class="content">
+                            <p><strong>Equipo:</strong> {{ most_dispatched_team[0].id }} </p>
+                            <p><strong>Despachos: </strong>{{ most_dispatched_team[1] }} </p>
+                            <p><strong>Tipo:</strong> {{ most_dispatched_team[0].type }} </p>
+                            <p><strong>Miembros:</strong> {{ most_dispatched_team[0].members | length }} </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="ui card">
+                        <div class="content">
+                            <div class="header">Mas Ingresos Generados</div>
+                        </div>
+                        <div class="content">
+                            <p><strong>Equipo:</strong> {{ most_profitable_team[0].id }} </p>
+                            <p><strong>Ingresos: </strong> &cent;{{ most_profitable_team[1] }} </p>
+                            <p><strong>Tipo:</strong> {{ most_profitable_team[0].type }} </p>
+                            <p><strong>Miembros:</strong> {{ most_profitable_team[0].members | length }} </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <h2 class="ui header panel-header spaced">Top Ambulancias & Equipos</h2>
+        <div class="ui horizontal segments">
+            <div class="ui segment">
+                <table class="ui single line table">
+                    <thead>
+                    <tr>
+                        <th>Ambulancia <small>(Placa)</small></th>
+                        <th>Despachos</th>
+                        <th>Ingresos</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for plate_number, dispatchs, profits in top_ambulances %}
+                        <tr>
+                            <td>{{ plate_number }}</td>
+                            <td>{{ dispatchs }}</td>
+                            <td>&cent;{{ profits }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="ui segment">
+                <table class="ui single line table">
+                    <thead>
+                    <tr>
+                        <th>Equipo</th>
+                        <th>Tipo</th>
+                        <th>Ingresos</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for team_id, type, profits in top_teams %}
+                        <tr>
+                            <td>{{ team_id }}</td>
+                            <td>{{ type }}</td>
+                            <td>&cent;{{ profits }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
